@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Slide PNG hasil ekspor — bisa dibuat ulang kapan saja dengan:
+#   cd pitch && node build-pdf.js
+pitch/slides/
+
+# Berkas sementara sistem
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.tmp
+*.log
