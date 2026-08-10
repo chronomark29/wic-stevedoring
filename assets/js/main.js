@@ -44,6 +44,36 @@
     }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
 
     els.forEach(function (el) { io.observe(el); });
+
+    // Jaring pengaman. IntersectionObserver hanya melaporkan keadaan pada saat
+    // callback-nya berjalan, bukan riwayatnya. Di perangkat lambat, callback
+    // bisa kelaparan CPU saat pengunjung men-scroll cepat; begitu akhirnya
+    // jalan, elemennya sudah lewat di atas layar dan dilaporkan "tidak
+    // terlihat" — akibatnya opacity-nya tinggal 0 selamanya. Sapu apa pun yang
+    // sudah berada sepenuhnya di atas viewport dan tampilkan langsung.
+    catchUp();
+    if (!catchUpBound) {
+      catchUpBound = true;
+      var ticking = false;
+      var onScroll = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { ticking = false; catchUp(); });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('load', catchUp);
+    }
+  }
+
+  /* Tampilkan elemen yang sudah terlewat di atas layar tanpa sempat terpicu. */
+  var catchUpBound = false;
+  function catchUp() {
+    var pending = document.querySelectorAll('[data-reveal]:not(.is-in)');
+    for (var i = 0; i < pending.length; i++) {
+      if (pending[i].getBoundingClientRect().bottom <= 0) {
+        pending[i].classList.add('is-in');
+      }
+    }
   }
 
   /* ---------------------------------------------------------------------
