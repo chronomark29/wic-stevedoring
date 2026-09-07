@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Panduan Website — PT. Wirama Indah Cigading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-900:#04102C; --navy-800:#071F4D; --navy-700:#0B2B6B; --navy-600:#113A8A;
+  --navy-100:#E8EEFA; --orange-600:#D96C0C; --orange-500:#F58220; --orange-400:#FF9F42;
+  --orange-100:#FFF1E2; --ink:#0C1526; --muted:#4F5A70; --line:#DCE4F0;
+  --surface:#F4F7FB; --ok:#0E8F47; --bad:#C42A20;
+  --font:"Plus Jakarta Sans",-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--font);background:#8894a8;color:var(--ink);
+  -webkit-font-smoothing:antialiased;counter-reset:page;
+}
+
+/* ---------- KANVAS A4 (794 x 1123 px @96dpi) ---------- */
+.page{
+  counter-increment:page;
+  position:relative;width:794px;height:1123px;overflow:hidden;
+  background:#fff;margin:0 auto 22px;padding:62px 64px 74px;
+  display:flex;flex-direction:column;
+  break-after:page;page-break-after:always;
+}
+.page:last-child{break-after:auto;page-break-after:auto}
+@media print{ body{background:#fff} .page{margin:0} }
+
+.page--navy{background:linear-gradient(150deg,var(--navy-900),var(--navy-700) 62%,var(--navy-600));color:#fff}
+.page--navy h1,.page--navy h2,.page--navy h3{color:#fff}
+.page--navy p{color:rgba(255,255,255,.86)}
+
+/* ---------- TIPOGRAFI: dibuat besar supaya nyaman dibaca ---------- */
+h1{font-size:40px;font-weight:800;line-height:1.14;letter-spacing:-.025em;color:var(--navy-800)}
+h2{font-size:27px;font-weight:800;line-height:1.22;letter-spacing:-.015em;color:var(--navy-800)}
+h3{font-size:20px;font-weight:800;line-height:1.3;color:var(--navy-700);margin-bottom:9px}
+p{font-size:17px;line-height:1.65;color:var(--ink);max-width:558px}
+p + p{margin-top:13px}
+strong{font-weight:800;color:var(--navy-800)}
+.page--navy strong{color:#fff}
+.muted{color:var(--muted)}
+.accent{color:var(--orange-500)}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--orange-600);margin-bottom:14px;
+}
+.eyebrow::before{content:"";width:26px;height:3px;background:var(--orange-500);border-radius:2px}
+.page--navy .eyebrow{color:var(--orange-400)}
+
+.rule{height:3px;width:64px;background:var(--orange-500);border-radius:2px;margin:16px 0 22px}
+.lead{font-size:19px;line-height:1.6;color:var(--muted);max-width:560px}
+.page--navy .lead{color:rgba(255,255,255,.82)}
+
+.body{flex:1;min-height:0}
+.gap{margin-top:22px}
+.gap-s{margin-top:14px}
+.gap-l{margin-top:32px}
+
+/* ---------- KAKI HALAMAN ---------- */
+.foot{
+  position:absolute;left:64px;right:64px;bottom:30px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);opacity:.7;
+}
+.foot::after{content:counter(page)}
+/* Sampul tidak diberi nomor halaman. */
+.page--cover .foot::after{content:""}
+.page--navy .foot{color:rgba(255,255,255,.6)}
+
+/* ---------- LANGKAH BERNOMOR ---------- */
+ol.steps{list-style:none;counter-reset:step;display:grid;gap:15px;margin-top:6px}
+ol.steps > li{
+  counter-increment:step;position:relative;padding-left:46px;
+  font-size:17px;line-height:1.6;color:var(--ink);max-width:604px;
+}
+ol.steps > li::before{
+  content:counter(step);position:absolute;left:0;top:-1px;
+  width:31px;height:31px;border-radius:50%;
+  background:var(--orange-500);color:#fff;
+  display:grid;place-items:center;font-size:15px;font-weight:800;
+}
+ol.steps--navy > li::before{background:var(--navy-700)}
+
+ul.dot{list-style:none;display:grid;gap:11px;margin-top:6px}
+ul.dot li{
+  position:relative;padding-left:29px;font-size:17px;line-height:1.6;
+  color:var(--ink);max-width:587px;
+}
+ul.dot li::before{
+  content:"";position:absolute;left:2px;top:9px;
+  width:9px;height:9px;border-radius:50%;background:var(--orange-500);
+}
+.page--navy ul.dot li{color:rgba(255,255,255,.9)}
+.page--navy ul.dot li::before{background:var(--orange-400)}
+
+ul.check{list-style:none;display:grid;gap:12px;margin-top:6px}
+ul.check li{
+  position:relative;padding-left:36px;font-size:17px;line-height:1.55;
+  color:var(--ink);max-width:594px;
+}
+ul.check li::before{
+  content:"";position:absolute;left:0;top:2px;width:23px;height:23px;border-radius:50%;
+  background:var(--orange-100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D96C0C' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/13px no-repeat;
+}
+.page--navy ul.check li{color:rgba(255,255,255,.9)}
+/* Shorthand `background` di atas memuat gambar centangnya sekalian, jadi di
+   halaman navy ia harus ditulis ulang lengkap — kalau hanya warnanya yang
+   diganti, centangnya ikut terhapus dan tersisa lingkaran kosong. */
+.page--navy ul.check li::before{
+  background:rgba(255,255,255,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/13px no-repeat;
+}
+
+/* ---------- KOTAK PERINTAH / KODE ---------- */
+pre{
+  background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--navy-600);
+  border-radius:10px;padding:15px 18px;margin-top:13px;
+  font-family:var(--mono);font-size:16px;line-height:1.6;color:var(--navy-800);
+  white-space:pre;overflow:hidden;
+}
+pre.term{border-left-color:var(--orange-500)}
+pre.tree{font-size:15.5px;line-height:1.64;color:var(--ink);border-left-color:var(--navy-100)}
+pre b{font-weight:600;color:var(--orange-600)}
+pre i{font-style:normal;color:var(--muted)}
+code{
+  font-family:var(--mono);font-size:15.5px;background:var(--navy-100);
+  color:var(--navy-800);padding:2px 6px;border-radius:5px;font-weight:600;
+}
+
+/* ---------- CALLOUT ---------- */
+.tip,.warn{
+  border-radius:12px;padding:16px 20px 16px 19px;margin-top:18px;
+  font-size:16px;line-height:1.6;max-width:600px;
+}
+.tip{background:var(--orange-100);border-left:4px solid var(--orange-500);color:#5A3410}
+.warn{background:#FDECEA;border-left:4px solid var(--bad);color:#6E1A14}
+.tip b,.warn b{display:block;margin-bottom:5px;font-size:16px;font-weight:800}
+.tip b{color:var(--orange-600)}
+.warn b{color:var(--bad)}
+.tip code,.warn code{background:rgba(255,255,255,.75)}
+
+/* ---------- TABEL ---------- */
+table{width:100%;border-collapse:collapse;font-size:16px;margin-top:14px}
+th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+th{
+  font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);border-bottom:2px solid var(--line);
+}
+td:first-child{font-weight:700;color:var(--navy-800)}
+tr:last-child td{border-bottom:none}
+.t-3 td:first-child{width:27%}
+.t-3 td:nth-child(2){width:38%;color:var(--muted)}
+.t-2 td:first-child{width:32%}
+.t-2 td:last-child{color:var(--muted)}
+
+/* ---------- KARTU ---------- */
+.cards{display:grid;gap:14px;margin-top:16px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px 21px;
+  box-shadow:0 4px 14px rgba(7,31,77,.05);
+}
+.card h3{margin-bottom:6px}
+.card p{font-size:16px;line-height:1.55}
+
+.toc{display:grid;gap:0;margin-top:10px}
+.toc a{
+  display:flex;align-items:baseline;gap:12px;text-decoration:none;color:var(--ink);
+  padding:12px 2px;border-bottom:1px solid var(--line);font-size:17px;
+}
+.toc a:last-child{border-bottom:none}
+.toc .n{
+  flex:none;width:30px;height:30px;border-radius:8px;background:var(--navy-100);
+  color:var(--navy-700);display:grid;place-items:center;font-size:14px;font-weight:800;
+}
+.toc .t{flex:1;font-weight:600}
+.toc .p{flex:none;color:var(--muted);font-size:15px;font-weight:700}
+
+.pill{
+  display:inline-flex;align-items:center;padding:7px 15px;border-radius:999px;
+  background:var(--navy-100);color:var(--navy-700);font-size:14.5px;font-weight:700;
+}
+.pill--glass{background:rgba(255,255,255,.15);color:#fff}
+.pill--accent{background:var(--orange-100);color:var(--orange-600)}
+
+.dots{
+  position:absolute;top:-30px;right:-30px;width:230px;height:230px;
+  background-image:radial-gradient(rgba(255,255,255,.26) 2px,transparent 2px);
+  background-size:26px 26px;pointer-events:none;
+}
+.glow{
+  position:absolute;width:600px;height:600px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(245,130,32,.20),transparent 62%);
+}
+.center{display:flex;flex-direction:column;justify-content:center;height:100%}
+</style>
+</head>
+<body>
+
+<!-- ===================== 1. SAMPUL ===================== -->
+<section class="page page--navy page--cover">
+  <div class="dots"></div>
+  <div class="glow" style="left:-200px;bottom:-280px"></div>
+  <div class="body center">
+    <span class="pill pill--glass" style="align-self:flex-start;margin-bottom:30px">Dokumen Serah Terima</span>
+    <h1 style="font-size:47px;max-width:16ch">Panduan Website<br>PT. Wirama Indah Cigading<span class="accent">.</span></h1>
+    <div class="rule" style="margin-top:26px"></div>
+    <p class="lead" style="font-size:21px;max-width:40ch">
+      Cara mengunduh, menjalankan, mengubah isi, dan menayangkan website Anda.
+      Tidak perlu bisa memrogram.
+    </p>
+    <div style="display:flex;gap:11px;margin-top:30px;flex-wrap:wrap">
+      <span class="pill pill--glass">Tanpa WordPress</span>
+      <span class="pill pill--glass">Tanpa database</span>
+      <span class="pill pill--glass">Tanpa biaya bulanan</span>
+    </div>
+    <p style="margin-top:44px;font-size:16px;color:rgba(255,255,255,.7)">
+      Repositori kode<br>
+      <b style="color:#fff;font-weight:700">github.com/chronomark29/wic-stevedoring</b>
+    </p>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 2. DAFTAR ISI ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Isi Dokumen</span>
+    <h1>Daftar Isi</h1>
+    <div class="rule"></div>
+    <div class="toc">
+      <a><span class="n">1</span><span class="t">Apa yang Anda terima</span><span class="p">hal. 3</span></a>
+      <a><span class="n">2</span><span class="t">Cara mengunduh dari GitHub</span><span class="p">hal. 4</span></a>
+      <a><span class="n">3</span><span class="t">Cara membuka di komputer sendiri</span><span class="p">hal. 5</span></a>
+      <a><span class="n">4</span><span class="t">Cara memasang ke internet</span><span class="p">hal. 6</span></a>
+      <a><span class="n">5</span><span class="t">Mengganti nomor telepon, WhatsApp, dan email</span><span class="p">hal. 8</span></a>
+      <a><span class="n">6</span><span class="t">Menambah foto galeri</span><span class="p">hal. 9</span></a>
+      <a><span class="n">7</span><span class="t">Menambah proyek dan logo klien</span><span class="p">hal. 10</span></a>
+      <a><span class="n">8</span><span class="t">Menyetel angka kalkulator estimasi</span><span class="p">hal. 11</span></a>
+      <a><span class="n">9</span><span class="t">Mengubah tulisan di halaman</span><span class="p">hal. 12</span></a>
+      <a><span class="n">10</span><span class="t">Yang perlu dikonfirmasi sebelum live</span><span class="p">hal. 13</span></a>
+      <a><span class="n">11</span><span class="t">Kalau ada masalah</span><span class="p">hal. 14</span></a>
+      <a><span class="n">12</span><span class="t">Butuh update cepat dan presisi?</span><span class="p">hal. 15</span></a>
+    </div>
+    <div class="tip">
+      <b>Cara membaca panduan ini</b>
+      Bagian 1 sampai 4 hanya perlu dibaca sekali, saat pertama kali memasang website.
+      Bagian 5 sampai 9 adalah pekerjaan sehari-hari — buka bagian yang Anda butuhkan saja.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 3. APA YANG ANDA TERIMA ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 1</span>
+    <h1>Apa yang Anda terima</h1>
+    <div class="rule"></div>
+    <p>
+      Website ini <strong>hanya sebuah folder berisi berkas</strong>. Tidak ada WordPress,
+      tidak ada database, tidak ada plugin, tidak ada biaya langganan. Folder ini diunggah
+      ke hosting mana pun, lalu website langsung jalan.
+    </p>
+<pre class="tree">Wicstevedoring Site/
+├── index.html               <i>Beranda</i>
+├── tentang.html             <i>Tentang Kami</i>
+├── layanan.html             <i>Layanan + pencari muatan</i>
+├── proyek.html              <i>Proyek / rekam jejak</i>
+├── galeri.html              <i>Galeri foto</i>
+├── kontak.html              <i>Kontak + formulir penawaran</i>
+├── favicon.svg              <i>Ikon kecil di tab browser</i>
+├── robots.txt               <i>Instruksi untuk mesin pencari</i>
+├── sitemap.xml              <i>Peta situs untuk Google</i>
+├── PANDUAN-WEBSITE.md       <i>Panduan ini, versi teks</i>
+├── Panduan-Website-WIC.pdf  <i>Panduan ini, versi PDF</i>
+├── panduan/                 <i>Sumber PDF panduan</i>
+├── _reference/              <i>Arsip tampilan website lama</i>
+└── assets/
+    ├── css/                 <i>Tampilan — 4 berkas</i>
+    ├── js/                  <i>Fungsi interaktif — 7 berkas</i>
+    ├── data/content.js      <b>← DI SINI ISI WEBSITE DIUBAH</b>
+    └── img/                 <i>Semua foto dan logo</i></pre>
+    <div class="tip">
+      <b>Satu hal yang paling penting diingat</b>
+      Hampir semua perubahan isi — nomor telepon, foto galeri, proyek, logo klien,
+      angka kalkulator — cukup dilakukan di satu berkas saja:
+      <code>assets/data/content.js</code>
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 4. UNDUH DARI GITHUB ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 2</span>
+    <h1>Cara mengunduh dari GitHub</h1>
+    <div class="rule"></div>
+    <p>
+      Seluruh kode website tersimpan di GitHub — layanan penyimpanan kode di internet.
+      Alamatnya:
+    </p>
+<pre>https://github.com/chronomark29/wic-stevedoring</pre>
+    <p class="gap-s">Ada dua cara mengunduhnya. Pilih salah satu.</p>
+
+    <h3 class="gap">Cara A — Unduh ZIP <span class="muted" style="font-weight:600">(paling gampang)</span></h3>
+    <ol class="steps">
+      <li>Buka alamat di atas lewat browser.</li>
+      <li>Cari tombol hijau bertuliskan <strong>Code</strong>, lalu klik.</li>
+      <li>Pilih <strong>Download ZIP</strong>.</li>
+      <li>Buka folder <strong>Downloads</strong>, klik kanan berkas ZIP tadi,
+          pilih <strong>Extract All</strong> (Ekstrak Semua).</li>
+      <li>Selesai. Hasil ekstraknya adalah folder website Anda.</li>
+    </ol>
+
+    <h3 class="gap">Cara B — <code>git clone</code> <span class="muted" style="font-weight:600">(ikut menerima pembaruan)</span></h3>
+    <p style="font-size:16px">
+      Butuh aplikasi <strong>Git</strong>, gratis di <code>git-scm.com/downloads</code>.
+      Setelah terpasang, buka Command Prompt lalu ketik:
+    </p>
+<pre class="term">git clone https://github.com/chronomark29/wic-stevedoring.git</pre>
+    <p style="font-size:16px;margin-top:11px">
+      Kelebihannya: kalau nanti ada perbaikan, Anda cukup mengetik <code>git pull</code>
+      untuk menarik versi terbaru — tidak perlu mengunduh ulang semuanya.
+    </p>
+
+    <div class="tip">
+      <b>Tips penyimpanan</b>
+      Simpan folder hasil ekstrak di tempat yang mudah dicari, misalnya
+      <code>Documents\Website WIC</code>. Hindari meninggalkannya di dalam folder
+      Downloads, karena mudah terhapus saat bersih-bersih.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 5. BUKA DI KOMPUTER ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 3</span>
+    <h1>Cara membuka di komputer sendiri</h1>
+    <div class="rule"></div>
+    <p>
+      Sebelum diunggah ke internet, sebaiknya website dicoba dulu di komputer.
+      Mengklik dua kali <code>index.html</code> memang menampilkan halaman, tetapi
+      kalkulator estimasi, galeri, dan tombol ganti bahasa <strong>tidak akan
+      berfungsi</strong> — browser memblokir sebagian fungsi bila berkas dibuka
+      langsung dari hard disk.
+    </p>
+    <p>Cara yang benar adalah menjalankan "server kecil" di komputer Anda sendiri:</p>
+    <ol class="steps">
+      <li>Buka folder website di <strong>File Explorer</strong>.</li>
+      <li>Klik kolom alamat di bagian atas jendela, ketik <code>cmd</code>, tekan
+          <strong>Enter</strong>. Muncul jendela hitam yang sudah berada di folder itu.</li>
+      <li>Ketik perintah berikut, lalu tekan <strong>Enter</strong>:
+<pre class="term">python -m http.server 5211</pre></li>
+      <li>Buka browser, ketik alamat <strong>http://127.0.0.1:5211/</strong></li>
+      <li>Website tampil lengkap dengan semua fiturnya.</li>
+      <li>Setelah selesai, kembali ke jendela hitam dan tekan <strong>Ctrl + C</strong>
+          untuk menghentikannya.</li>
+    </ol>
+
+    <div class="warn">
+      <b>Kalau muncul tulisan "python is not recognized"</b>
+      Artinya Python belum terpasang. Buka <code>python.org/downloads</code>, klik tombol
+      kuning <b style="display:inline">Download Python</b>, jalankan berkasnya. Pada layar
+      pertama pemasangan, <b style="display:inline">centang kotak "Add Python to PATH"</b>
+      sebelum menekan Install. Setelah selesai, tutup dan buka ulang Command Prompt,
+      lalu ulangi langkah 3.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 6. PASANG KE INTERNET (1) ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 4</span>
+    <h1>Cara memasang ke internet</h1>
+    <div class="rule"></div>
+    <p>
+      Pilih satu di antara tiga cara berikut, sesuai hosting yang Anda pakai.
+      Tidak ada yang perlu diatur pada ketiganya — tidak ada PHP, tidak ada Node,
+      tidak ada database.
+    </p>
+
+    <h3 class="gap">Pilihan 1 — cPanel
+      <span class="muted" style="font-weight:600">(Niagahoster, Domainesia, Rumahweb)</span></h3>
+    <ol class="steps">
+      <li>Masuk ke cPanel milik Anda.</li>
+      <li>Buka menu <strong>File Manager</strong>.</li>
+      <li>Masuk ke folder <code>public_html</code>.</li>
+      <li>Hapus isi lama di dalamnya bila website versi lama masih ada di situ.</li>
+      <li>Unggah <strong>seluruh isi</strong> folder website — bukan foldernya, melainkan
+          isinya. <code>index.html</code> dan <code>assets/</code> harus berada langsung
+          di dalam <code>public_html</code>.</li>
+      <li>Buka nama domain Anda di browser. Website sudah tayang.</li>
+    </ol>
+
+    <div class="warn">
+      <b>Kesalahan yang paling sering terjadi</b>
+      Kalau <code>index.html</code> masuk ke dalam sub-folder — misalnya
+      <code>public_html/Wicstevedoring Site/index.html</code> — website tidak akan muncul.
+      Berkas <code>index.html</code> harus berada <b style="display:inline">langsung</b>
+      di dalam <code>public_html</code>.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 7. PASANG KE INTERNET (2) ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 4 · lanjutan</span>
+    <h2 style="font-size:30px">Dua pilihan hosting gratis</h2>
+    <div class="rule"></div>
+
+    <h3>Pilihan 2 — Netlify <span class="muted" style="font-weight:600">(paling cepat)</span></h3>
+    <ol class="steps">
+      <li>Buka <code>app.netlify.com</code> dan buat akun gratis.</li>
+      <li>Setelah masuk, cari area bertuliskan
+          <strong>"Drag and drop your site output folder here"</strong>.</li>
+      <li>Seret folder website dari File Explorer, jatuhkan ke area tersebut.</li>
+      <li>Tunggu beberapa detik. Netlify langsung memberi alamat web.</li>
+      <li>Nama domain sendiri dipasang lewat menu <strong>Domain settings</strong>.</li>
+    </ol>
+
+    <h3 class="gap-l">Pilihan 3 — Vercel <span class="muted" style="font-weight:600">(otomatis mengikuti GitHub)</span></h3>
+    <ol class="steps steps--navy">
+      <li>Buka <code>vercel.com</code> dan masuk memakai akun GitHub.</li>
+      <li>Klik <strong>Add New → Project</strong>.</li>
+      <li>Pilih repository <code>wic-stevedoring</code>.</li>
+      <li>Biarkan semua pengaturan apa adanya, lalu klik <strong>Deploy</strong>.</li>
+      <li>Setiap perubahan yang disimpan ke GitHub membuat website otomatis diperbarui
+          dalam waktu kurang dari satu menit.</li>
+    </ol>
+
+    <div class="tip">
+      <b>Mana yang sebaiknya dipilih?</b>
+      Kalau Anda sudah punya hosting berbayar dan nama domain, pakai
+      <b style="display:inline">Pilihan 1</b>. Kalau ingin website cepat tayang tanpa biaya,
+      pakai <b style="display:inline">Pilihan 3</b> — karena pembaruan berikutnya jadi
+      otomatis, tidak perlu unggah ulang.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 8. GANTI KONTAK ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 5</span>
+    <h1>Mengganti nomor telepon,<br>WhatsApp, dan email</h1>
+    <div class="rule"></div>
+    <p>
+      Buka berkas <code>assets/data/content.js</code> memakai aplikasi teks apa pun.
+      Notepad sudah cukup, tetapi <strong>Visual Studio Code</strong> jauh lebih nyaman —
+      gratis di <code>code.visualstudio.com</code>.
+    </p>
+    <p>Blok paling atas berisi data perusahaan:</p>
+<pre>WIC.company = {
+  phone:    '+62 254 602424',
+  phoneAlt: '+62 254 605604',
+  whatsapp: '6281310121513',   <i>// tanpa + dan tanpa spasi</i>
+  email:    'operation.wic@melati-group.com',
+  ...
+};</pre>
+    <p class="gap-s">Ganti isi di dalam tanda kutip, simpan, selesai.</p>
+
+    <div class="warn">
+      <b>Jangan lupa bagian ini</b>
+      Nomor telepon dan email juga tertulis langsung di bagian atas (header) dan bawah
+      (footer) ke-6 berkas HTML. Setelah mengubah <code>content.js</code>, cari juga
+      tulisan <code>602424</code> dan <code>operation.wic</code> di seluruh berkas HTML,
+      lalu ganti di sana.
+    </div>
+
+    <div class="tip">
+      <b>Cara cepat mencarinya</b>
+      Di Visual Studio Code, tekan <b style="display:inline">Ctrl + Shift + F</b> untuk
+      mencari sebuah kata di semua berkas sekaligus. Semua tempat yang memuat nomor lama
+      akan langsung terdaftar, tinggal diganti satu per satu.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 9. GALERI ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 6</span>
+    <h1>Menambah foto galeri</h1>
+    <div class="rule"></div>
+    <ol class="steps">
+      <li>Simpan foto ke folder <code>assets/img/gallery/</code></li>
+      <li>Beri nama berurutan mengikuti yang sudah ada:
+          <code>g16.jpg</code>, <code>g17.jpg</code>, dan seterusnya.</li>
+      <li>Buka <code>assets/data/content.js</code>, cari bagian <code>WIC.gallery</code>,
+          lalu tambahkan satu baris:
+<pre>{ f: 'g16.jpg', cat: 'operasi',
+  cap: { id: 'Keterangan foto',
+         en: 'Photo caption' } },</pre></li>
+    </ol>
+
+    <table class="t-2">
+      <tr><th>Bagian</th><th>Artinya</th></tr>
+      <tr><td>f</td><td>Nama berkas foto — harus persis sama dengan nama di folder</td></tr>
+      <tr><td>cat</td><td>Kategori. Hanya boleh <code>operasi</code>, <code>alat</code>,
+          <code>kapal</code>, atau <code>tim</code></td></tr>
+      <tr><td>cap.id</td><td>Keterangan foto Bahasa Indonesia</td></tr>
+      <tr><td>cap.en</td><td>Keterangan foto Bahasa Inggris</td></tr>
+    </table>
+
+    <div class="tip">
+      <b>Perkecil dulu ukuran fotonya</b>
+      Sebaiknya di bawah 500 KB supaya website tetap ringan dibuka dari HP. Foto dari
+      kamera HP biasanya 3–5 MB, jadi perlu diperkecil. Bisa memakai
+      <code>squoosh.app</code> — gratis, langsung di browser, tanpa memasang aplikasi.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 10. PROYEK & LOGO ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 7</span>
+    <h1>Menambah proyek<br>dan logo klien</h1>
+    <div class="rule"></div>
+
+    <h3>Menambah proyek</h3>
+    <ol class="steps">
+      <li>Simpan foto proyek ke <code>assets/img/projects/</code></li>
+      <li>Di <code>content.js</code>, cari <code>WIC.projects</code>, lalu salin satu blok
+          yang sudah ada dan ubah isinya:</li>
+    </ol>
+<pre>{
+  id: 'nama-unik',
+  img: 'assets/img/projects/foto-anda.png',
+  client: 'PT. Nama Klien',
+  figure: '30.000', unit: 'MT',
+  title: { id: 'Judul Indonesia', en: 'English Title' },
+  desc:  { id: 'Penjelasan singkat', en: 'Short description' },
+  meta: [ { k: { id: 'Kapal', en: 'Vessel' },
+            v: 'Mv. Nama Kapal' } ]
+}</pre>
+    <p style="font-size:16px;margin-top:11px">
+      Isian <code>id</code> harus unik — tidak boleh sama dengan proyek lain.
+    </p>
+
+    <h3 class="gap-l">Bagian 7b — Menambah logo klien</h3>
+    <ol class="steps">
+      <li>Simpan berkas logo ke <code>assets/img/partners/</code>. Format PNG dengan latar
+          transparan memberi hasil paling rapi.</li>
+      <li>Di <code>content.js</code>, cari <code>WIC.partners</code>, tambahkan satu baris:
+<pre>{ n: 'Nama Perusahaan', f: 'namafile.png' },</pre></li>
+    </ol>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 11. KALKULATOR ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 8</span>
+    <h1>Menyetel angka<br>kalkulator estimasi</h1>
+    <div class="rule"></div>
+    <p>
+      Kalkulator Estimasi Bongkar adalah fitur utama website ini. Calon pelanggan memilih
+      komoditas, tonase, dan metode bongkar, lalu langsung melihat perkiraan produktivitas
+      dan lama sandar.
+    </p>
+
+    <div class="warn">
+      <b>Angka yang terpasang sekarang belum angka WIC</b>
+      Yang dipakai saat ini adalah rata-rata industri yang konservatif, bukan produktivitas
+      WIC yang sebenarnya. Begitu diganti dengan angka Anda sendiri, alat ini menjadi
+      benar-benar akurat — dan menjadi keunggulan yang tidak dimiliki PBM lain di Cilegon.
+    </div>
+
+    <p class="gap-s">Di <code>content.js</code>, cari <code>WIC.equipment</code>:</p>
+<pre><i>// angka = MT per hari kerja efektif</i>
+{ id: 'ship-crane',  rate: [4000, 6000] },
+{ id: 'shore-crane', rate: [6000, 10000] },
+{ id: 'csu',         rate: [10000, 15000] },
+{ id: 'bagged',      rate: [1500, 2500] },</pre>
+
+    <p class="gap-s">
+      Ubah pasangan angka <code>[minimum, maksimum]</code> sesuai produktivitas gang Anda.
+    </p>
+    <p>
+      Setiap komoditas juga punya <code>factor</code> — pengali yang menyesuaikan kecepatan
+      bongkar menurut sifat muatan: batu bara <code>1.1</code> karena mengalir lancar,
+      raw sugar <code>0.85</code> karena lebih lambat. Angka ini juga boleh disetel.
+    </p>
+    <p>
+      Website selalu menampilkan keterangan bahwa hasilnya bersifat perkiraan dan bukan
+      penawaran resmi, sehingga aman dipakai sebagai alat percakapan awal dengan calon
+      pelanggan.
+    </p>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 12. TULISAN ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 9</span>
+    <h1>Mengubah tulisan<br>di halaman</h1>
+    <div class="rule"></div>
+    <p>
+      Semua tulisan yang tampil di website tersimpan di satu berkas:
+      <code>assets/js/i18n.js</code>. Isinya dua daftar — <code>id:</code> untuk Bahasa
+      Indonesia dan <code>en:</code> untuk Bahasa Inggris.
+    </p>
+    <p>Contoh satu baris tulisan:</p>
+<pre>'hero.title': 'Menggerakkan Muatan Anda,&lt;br&gt;
+               Menguatkan Bisnis Anda',</pre>
+
+    <div class="warn">
+      <b>Wajib diubah di dua tempat</b>
+      Setiap tulisan harus diubah di <b style="display:inline">kedua</b> daftar —
+      <code>id:</code> dan <code>en:</code>. Kalau hanya salah satu, tulisan lama akan
+      muncul kembali begitu pengunjung menekan tombol ganti bahasa.
+    </div>
+
+    <div class="tip">
+      <b>Kalau tulisannya panjang atau banyak</b>
+      Pekerjaan ini yang paling mudah salah ketik — satu tanda kutip atau koma yang
+      hilang membuat seluruh halaman jadi kosong putih. Untuk perubahan tulisan yang
+      banyak, lebih aman dikerjakan lewat Kaelyth Studio (lihat halaman terakhir).
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 13. KONFIRMASI ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 10</span>
+    <h1>Yang perlu dikonfirmasi<br>sebelum benar-benar live</h1>
+    <div class="rule"></div>
+    <p style="font-size:16px">
+      Hal-hal berikut sengaja <strong>tidak dicantumkan</strong> di website karena belum
+      bisa dipastikan kebenarannya. Website yang menawarkan jasa kepada Cargill dan Wilmar
+      tidak boleh memuat klaim yang bisa dibantah.
+    </p>
+
+    <table class="t-3">
+      <tr><th>Hal</th><th>Alasan belum dipakai</th><th>Yang dibutuhkan</th></tr>
+      <tr>
+        <td>Sertifikasi ISO 9001:2015</td>
+        <td>Unggahan audit di Instagram menyebut <i>Ratu Melati</i>, perusahaan saudara, bukan WIC</td>
+        <td>Nomor sertifikat atas nama WIC</td>
+      </tr>
+      <tr>
+        <td>Angka "2641" dari situs lama</td>
+        <td>Muncul tanpa keterangan, artinya tidak diketahui</td>
+        <td>Penjelasan artinya, misalnya jumlah kapal yang ditangani</td>
+      </tr>
+      <tr>
+        <td>Foto testimoni</td>
+        <td>Situs lama memakai foto stok orang asing, bukan Didi Setiadi, Agustino, atau Diki Taufan</td>
+        <td>Foto asli beserta izin pemakaian</td>
+      </tr>
+      <tr>
+        <td>Akun Instagram</td>
+        <td>Footer lama menautkan @benua.group, sedangkan akun grup yang aktif @melati.group</td>
+        <td>Konfirmasi akun mana yang benar</td>
+      </tr>
+      <tr>
+        <td>Titik peta</td>
+        <td>Peta memakai pencarian alamat, bukan titik persis</td>
+        <td>Tautan berbagi dari Google Maps</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      <b>Sementara ini</b>
+      Testimoni ditampilkan sebagai kartu kutipan dengan logo perusahaan klien, tanpa foto
+      orang. Begitu data di atas dikonfirmasi, semuanya bisa dipasang dan website menjadi
+      lebih kuat lagi.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 14. MASALAH ===================== -->
+<section class="page">
+  <div class="body">
+    <span class="eyebrow">Bagian 11</span>
+    <h1>Kalau ada masalah</h1>
+    <div class="rule"></div>
+
+    <table class="t-3">
+      <tr><th>Gejala</th><th>Penyebab</th><th>Solusi</th></tr>
+      <tr>
+        <td>Foto tidak muncul</td>
+        <td>Folder <code>assets/</code> tidak ikut terunggah</td>
+        <td>Unggah ulang seluruh folder</td>
+      </tr>
+      <tr>
+        <td>Kalkulator atau galeri diam saja</td>
+        <td>Berkas dibuka lewat klik dua kali, bukan lewat server</td>
+        <td>Ikuti Bagian 3</td>
+      </tr>
+      <tr>
+        <td>Pilihan bahasa tidak diingat</td>
+        <td>Browser dalam mode penyamaran (incognito)</td>
+        <td>Normal — bahasa tetap berganti, hanya tidak tersimpan</td>
+      </tr>
+      <tr>
+        <td>Perubahan tidak kelihatan</td>
+        <td>Browser masih menampilkan versi lama dari ingatannya</td>
+        <td>Tekan Ctrl + Shift + R</td>
+      </tr>
+      <tr>
+        <td>Tampilan berantakan tanpa warna</td>
+        <td>Folder <code>assets/css/</code> tidak ikut terunggah</td>
+        <td>Unggah ulang seluruh folder</td>
+      </tr>
+      <tr>
+        <td>Halaman kosong putih</td>
+        <td>Ada kesalahan penulisan di <code>content.js</code></td>
+        <td>Tekan F12, lihat pesan merah di tab Console</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      <b>Kebiasaan yang menyelamatkan</b>
+      Sebelum mengubah <code>content.js</code>, salin dulu berkasnya sebagai cadangan —
+      misalnya diberi nama <code>content-backup.js</code>. Kalau terjadi kesalahan,
+      tinggal kembalikan yang lama dan website hidup lagi dalam hitungan detik.
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+<!-- ===================== 15. KAELYTH STUDIO ===================== -->
+<section class="page page--navy">
+  <div class="dots"></div>
+  <div class="glow" style="right:-240px;top:-200px"></div>
+  <div class="body center">
+    <span class="eyebrow">Bagian 12</span>
+    <h1 style="font-size:42px;max-width:17ch">Butuh update cepat<br>dan presisi<span class="accent">?</span></h1>
+    <div class="rule" style="margin-top:22px"></div>
+    <p class="lead" style="max-width:52ch">
+      Untuk perubahan rutin, pengerjaannya jauh lebih cepat dan hasilnya lebih rapi bila
+      dikerjakan di <strong>Kaelyth Studio (Mark)</strong> — yang membangun website ini
+      dan paling memahami strukturnya.
+    </p>
+
+    <ul class="check gap">
+      <li>Menambah dan menata foto galeri</li>
+      <li>Memperbarui dokumentasi proyek dan rekam jejak</li>
+      <li>Mengganti angka kalkulator dan menambah logo klien</li>
+      <li>Membuat halaman baru atau bagian baru pada halaman lama</li>
+      <li>Memperbaiki tampilan yang berubah setelah diedit sendiri</li>
+    </ul>
+
+    <p class="gap" style="max-width:52ch">
+      Cukup kirimkan fotonya atau tulisannya. Perubahan langsung tayang, tanpa Anda perlu
+      menyentuh kode sama sekali, dan tanpa risiko website rusak karena salah ketik satu
+      tanda baca.
+    </p>
+
+    <div style="margin-top:38px;padding:24px 28px;border-radius:16px;background:rgba(255,255,255,.1)">
+      <span class="eyebrow" style="margin-bottom:9px">Hubungi</span>
+      <p style="font-size:25px;font-weight:800;color:#fff;line-height:1.3">Kaelyth Studio <span style="opacity:.75;font-weight:700">(Mark)</span></p>
+      <p style="font-size:19px;color:rgba(255,255,255,.88);margin-top:6px">rindenganmark@gmail.com</p>
+    </div>
+  </div>
+  <div class="foot"><span>Panduan Website WIC</span></div>
+</section>
+
+</body>
+</html>

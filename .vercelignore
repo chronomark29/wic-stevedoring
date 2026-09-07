@@ -1,15 +1,12 @@
 # Berkas di bawah ini TETAP ADA di repo GitHub, tapi tidak ikut disajikan
-# Vercel. Hasil deploy bersifat publik walaupun repo-nya privat, jadi materi
-# penjualan dan dokumen internal tidak boleh ikut ke sana.
+# Vercel. Hasil deploy bersifat publik walaupun repo-nya privat, jadi dokumen
+# internal tidak boleh ikut ke sana.
 
-# Materi penjualan — memuat daftar harga, nama, dan email
-pitch/
-Pitch-Deck-WIC.pdf
-SALES-ONEPAGER.md
-
-# Dokumentasi internal
+# Dokumentasi & panduan serah terima
 README.md
-README-HANDOVER.md
+PANDUAN-WEBSITE.md
+Panduan-Website-WIC.pdf
+panduan/
 
 # Tangkapan layar situs lama (38 MB, tidak dipakai website)
 _reference/

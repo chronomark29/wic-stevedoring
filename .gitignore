@@ -1,9 +1,10 @@
 # Dependencies
 node_modules/
 
-# Slide PNG hasil ekspor — bisa dibuat ulang kapan saja dengan:
-#   cd pitch && node build-pdf.js
-pitch/slides/
+# PNG hasil ekspor tiap halaman panduan — hanya untuk pemeriksaan mata, bisa
+# dibuat ulang kapan saja dengan:
+#   cd panduan && node build-pdf.js
+panduan/halaman/
 
 # Berkas sementara sistem
 Thumbs.db
