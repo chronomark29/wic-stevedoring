@@ -60,11 +60,10 @@ di satu berkas, yaitu `assets/data/content.js`.
 
 ## 2. Cara mengunduh dari GitHub
 
-Seluruh kode website tersimpan di GitHub — layanan penyimpanan kode di internet:
+Seluruh kode website tersimpan di GitHub — layanan penyimpanan kode di internet.
+Repo ini terbuka untuk umum, jadi Anda tidak perlu punya akun atau login:
 
-```
-https://github.com/chronomark29/wic-stevedoring
-```
+**<https://github.com/chronomark29/wic-stevedoring>**
 
 Ada dua cara mengunduhnya. Pilih salah satu.
 

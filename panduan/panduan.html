@@ -135,6 +135,27 @@ code{
   color:var(--navy-800);padding:2px 6px;border-radius:5px;font-weight:600;
 }
 
+/* ---------- ALAMAT WEB ----------
+   Dibuat sebagai <a> sungguhan, bukan teks di dalam <pre>. Playwright ikut
+   menyimpan anotasi tautannya ke dalam PDF, jadi alamat ini bisa diklik dan
+   tidak perlu diketik ulang — mengetik ulang "https://" persis di situlah
+   garis miring gandanya sering jadi salah. */
+a.url{
+  display:block;width:fit-content;margin-top:14px;
+  padding:12px 20px;border-radius:11px;text-decoration:none;
+  background:var(--navy-100);border:1px solid #C8D6EF;border-left:4px solid var(--navy-600);
+  font-family:var(--mono);font-size:17px;font-weight:600;color:var(--navy-700);
+}
+.urlnote{font-size:16px;line-height:1.55;color:var(--muted);margin-top:11px;max-width:558px}
+.urlnote b{font-family:var(--mono);font-size:15.5px;font-weight:600;color:var(--navy-700)}
+
+/* Alamat sebaris: tampil seperti <code> tapi bisa diklik di PDF. */
+a.lk{
+  font-family:var(--mono);font-size:15.5px;background:var(--navy-100);
+  color:var(--navy-700);padding:2px 6px;border-radius:5px;font-weight:600;
+  text-decoration:none;border-bottom:1.5px solid #A9C0E4;
+}
+
 /* ---------- CALLOUT ---------- */
 .tip,.warn{
   border-radius:12px;padding:16px 20px 16px 19px;margin-top:18px;
@@ -223,7 +244,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <p style="margin-top:44px;font-size:16px;color:rgba(255,255,255,.7)">
       Repositori kode<br>
-      <b style="color:#fff;font-weight:700">github.com/chronomark29/wic-stevedoring</b>
+      <a href="https://github.com/chronomark29/wic-stevedoring" style="color:#fff;font-weight:700;text-decoration:none;border-bottom:1.5px solid rgba(255,255,255,.4)">github.com/chronomark29/wic-stevedoring</a>
     </p>
   </div>
   <div class="foot"><span>Panduan Website WIC</span></div>
@@ -306,10 +327,12 @@ tr:last-child td{border-bottom:none}
     <div class="rule"></div>
     <p>
       Seluruh kode website tersimpan di GitHub — layanan penyimpanan kode di internet.
+      Repo ini terbuka untuk umum, jadi Anda tidak perlu punya akun atau login.
       Alamatnya:
     </p>
-<pre>https://github.com/chronomark29/wic-stevedoring</pre>
-    <p class="gap-s">Ada dua cara mengunduhnya. Pilih salah satu.</p>
+    <a class="url" href="https://github.com/chronomark29/wic-stevedoring">github.com/chronomark29/wic-stevedoring</a>
+    <p class="urlnote">Alamat di atas bisa langsung diklik. Kalau membaca versi
+      cetak, ketik apa adanya — tanpa <code>https://</code> pun tetap terbuka.</p>
 
     <h3 class="gap">Cara A — Unduh ZIP <span class="muted" style="font-weight:600">(paling gampang)</span></h3>
     <ol class="steps">
@@ -323,7 +346,7 @@ tr:last-child td{border-bottom:none}
 
     <h3 class="gap">Cara B — <code>git clone</code> <span class="muted" style="font-weight:600">(ikut menerima pembaruan)</span></h3>
     <p style="font-size:16px">
-      Butuh aplikasi <strong>Git</strong>, gratis di <code>git-scm.com/downloads</code>.
+      Butuh aplikasi <strong>Git</strong>, gratis di <a class="lk" href="https://git-scm.com/downloads">git-scm.com/downloads</a>.
       Setelah terpasang, buka Command Prompt lalu ketik:
     </p>
 <pre class="term">git clone https://github.com/chronomark29/wic-stevedoring.git</pre>
@@ -370,7 +393,7 @@ tr:last-child td{border-bottom:none}
 
     <div class="warn">
       <b>Kalau muncul tulisan "python is not recognized"</b>
-      Artinya Python belum terpasang. Buka <code>python.org/downloads</code>, klik tombol
+      Artinya Python belum terpasang. Buka <a class="lk" href="https://www.python.org/downloads/">python.org/downloads</a>, klik tombol
       kuning <b style="display:inline">Download Python</b>, jalankan berkasnya. Pada layar
       pertama pemasangan, <b style="display:inline">centang kotak "Add Python to PATH"</b>
       sebelum menekan Install. Setelah selesai, tutup dan buka ulang Command Prompt,
@@ -425,7 +448,7 @@ tr:last-child td{border-bottom:none}
 
     <h3>Pilihan 2 — Netlify <span class="muted" style="font-weight:600">(paling cepat)</span></h3>
     <ol class="steps">
-      <li>Buka <code>app.netlify.com</code> dan buat akun gratis.</li>
+      <li>Buka <a class="lk" href="https://app.netlify.com">app.netlify.com</a> dan buat akun gratis.</li>
       <li>Setelah masuk, cari area bertuliskan
           <strong>"Drag and drop your site output folder here"</strong>.</li>
       <li>Seret folder website dari File Explorer, jatuhkan ke area tersebut.</li>
@@ -435,7 +458,7 @@ tr:last-child td{border-bottom:none}
 
     <h3 class="gap-l">Pilihan 3 — Vercel <span class="muted" style="font-weight:600">(otomatis mengikuti GitHub)</span></h3>
     <ol class="steps steps--navy">
-      <li>Buka <code>vercel.com</code> dan masuk memakai akun GitHub.</li>
+      <li>Buka <a class="lk" href="https://vercel.com">vercel.com</a> dan masuk memakai akun GitHub.</li>
       <li>Klik <strong>Add New → Project</strong>.</li>
       <li>Pilih repository <code>wic-stevedoring</code>.</li>
       <li>Biarkan semua pengaturan apa adanya, lalu klik <strong>Deploy</strong>.</li>
@@ -463,7 +486,7 @@ tr:last-child td{border-bottom:none}
     <p>
       Buka berkas <code>assets/data/content.js</code> memakai aplikasi teks apa pun.
       Notepad sudah cukup, tetapi <strong>Visual Studio Code</strong> jauh lebih nyaman —
-      gratis di <code>code.visualstudio.com</code>.
+      gratis di <a class="lk" href="https://code.visualstudio.com">code.visualstudio.com</a>.
     </p>
     <p>Blok paling atas berisi data perusahaan:</p>
 <pre>WIC.company = {
@@ -523,7 +546,7 @@ tr:last-child td{border-bottom:none}
       <b>Perkecil dulu ukuran fotonya</b>
       Sebaiknya di bawah 500 KB supaya website tetap ringan dibuka dari HP. Foto dari
       kamera HP biasanya 3–5 MB, jadi perlu diperkecil. Bisa memakai
-      <code>squoosh.app</code> — gratis, langsung di browser, tanpa memasang aplikasi.
+      <a class="lk" href="https://squoosh.app">squoosh.app</a> — gratis, langsung di browser, tanpa memasang aplikasi.
     </div>
   </div>
   <div class="foot"><span>Panduan Website WIC</span></div>

@@ -70,6 +70,14 @@ fs.mkdirSync(SHOTS, { recursive: true });
       .map(e => '+' + (e.scrollWidth - e.clientWidth) + 'px — "'
                 + e.innerText.trim().split('\n')[0].slice(0, 40) + '…"');
 
+    // Alamat web harus berupa <a> supaya ikut jadi tautan yang bisa diklik di
+    // PDF. Alamat yang cuma teks memaksa pembaca mengetik ulang, dan di situlah
+    // "https://" sering jadi salah ketik.
+    const tautan = [...document.querySelectorAll('.page a[href^="http"]')].length;
+    const alamatTanpaTautan = [...document.querySelectorAll('.page code, .page pre')]
+      .filter(e => /^(https?:\/\/)?[a-z0-9-]+\.(com|app|org|id|net)(\/|$)/i.test(e.innerText.trim()))
+      .map(e => e.innerText.trim().slice(0, 50));
+
     const imgs = [...document.querySelectorAll('img')];
     const broken = imgs.filter(i => !i.complete || i.naturalWidth === 0)
                        .map(i => i.getAttribute('src'));
@@ -111,6 +119,8 @@ fs.mkdirSync(SHOTS, { recursive: true });
       totalGambar: imgs.length,
       fontOk: document.fonts.check('800 40px "Plus Jakarta Sans"'),
       monoOk: document.fonts.check('400 15px "JetBrains Mono"'),
+      tautan,
+      alamatTanpaTautan,
       preTerpotong,
       teksKecil: tiny,
       barisPanjang: longLines
@@ -123,6 +133,9 @@ fs.mkdirSync(SHOTS, { recursive: true });
   console.log('Gambar            :', check.totalGambar, '| rusak:', check.gambarRusak.length);
   if (check.gambarRusak.length) console.log('  rusak:', check.gambarRusak);
   console.log('Halaman meluber   :', check.meluber.length ? JSON.stringify(check.meluber) : 'tidak ada');
+  console.log('Tautan diklik     :', check.tautan);
+  console.log('Alamat tak diklik :', check.alamatTanpaTautan.length);
+  if (check.alamatTanpaTautan.length) check.alamatTanpaTautan.forEach(t => console.log('  •', t));
   console.log('Kode terpotong    :', check.preTerpotong.length);
   if (check.preTerpotong.length) check.preTerpotong.forEach(t => console.log('  •', t));
   console.log('Teks < ' + MIN_FONT + 'px      :', check.teksKecil.length);
