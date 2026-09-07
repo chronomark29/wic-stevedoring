@@ -372,32 +372,38 @@ tr:last-child td{border-bottom:none}
     <h1>Cara membuka di komputer sendiri</h1>
     <div class="rule"></div>
     <p>
-      Sebelum diunggah ke internet, sebaiknya website dicoba dulu di komputer.
-      Mengklik dua kali <code>index.html</code> memang menampilkan halaman, tetapi
-      kalkulator estimasi, galeri, dan tombol ganti bahasa <strong>tidak akan
-      berfungsi</strong> — browser memblokir sebagian fungsi bila berkas dibuka
-      langsung dari hard disk.
+      Sebelum diunggah ke internet, website ini bisa langsung dicoba di komputer.
+      Caranya sesederhana membuka foto:
     </p>
-    <p>Cara yang benar adalah menjalankan "server kecil" di komputer Anda sendiri:</p>
     <ol class="steps">
       <li>Buka folder website di <strong>File Explorer</strong>.</li>
-      <li>Klik kolom alamat di bagian atas jendela, ketik <code>cmd</code>, tekan
-          <strong>Enter</strong>. Muncul jendela hitam yang sudah berada di folder itu.</li>
-      <li>Ketik perintah berikut, lalu tekan <strong>Enter</strong>:
-<pre class="term">python -m http.server 5211</pre></li>
-      <li>Buka browser, ketik alamat <strong>http://127.0.0.1:5211/</strong></li>
-      <li>Website tampil lengkap dengan semua fiturnya.</li>
-      <li>Setelah selesai, kembali ke jendela hitam dan tekan <strong>Ctrl + C</strong>
-          untuk menghentikannya.</li>
+      <li>Klik dua kali berkas <code>index.html</code></li>
+      <li>Website terbuka di browser. Selesai.</li>
     </ol>
 
+    <div class="tip">
+      <b>Semua fitur berfungsi dengan cara ini</b>
+      Kalkulator estimasi, pencari muatan, galeri beserta lightbox-nya, tombol ganti
+      bahasa, dan perpindahan antar halaman &mdash; semuanya sudah diuji dan berjalan
+      normal saat dibuka dengan klik dua kali. Anda <b style="display:inline">tidak
+      perlu</b> memasang Python, Node, atau aplikasi apa pun.
+    </div>
+
+    <p class="gap">
+      Yang perlu diingat hanya satu: <strong>jangan memindahkan <code>index.html</code>
+      keluar dari foldernya.</strong> Berkas itu mengambil tampilan dan foto dari folder
+      <code>assets/</code> di sebelahnya. Kalau dipisahkan, halaman akan tampil polos
+      tanpa warna dan tanpa foto.
+    </p>
+
     <div class="warn">
-      <b>Kalau muncul tulisan "python is not recognized"</b>
-      Artinya Python belum terpasang. Buka <a class="lk" href="https://www.python.org/downloads/">python.org/downloads</a>, klik tombol
-      kuning <b style="display:inline">Download Python</b>, jalankan berkasnya. Pada layar
-      pertama pemasangan, <b style="display:inline">centang kotak "Add Python to PATH"</b>
-      sebelum menekan Install. Setelah selesai, tutup dan buka ulang Command Prompt,
-      lalu ulangi langkah 3.
+      <b>Kalau ada fitur yang tetap tidak jalan</b>
+      Ini jarang terjadi, biasanya karena pengaturan keamanan browser di komputer
+      kantor. Jalan keluarnya: buka folder website, klik kolom alamat File Explorer,
+      ketik <code>cmd</code> lalu Enter, kemudian ketik perintah di bawah dan buka
+      <b style="display:inline">http://127.0.0.1:5211/</b> di browser. Tekan
+      <b style="display:inline">Ctrl + C</b> untuk menghentikannya.
+<pre class="term">python -m http.server 5211</pre>
     </div>
   </div>
   <div class="foot"><span>Panduan Website WIC</span></div>
@@ -732,8 +738,8 @@ tr:last-child td{border-bottom:none}
       </tr>
       <tr>
         <td>Kalkulator atau galeri diam saja</td>
-        <td>Berkas dibuka lewat klik dua kali, bukan lewat server</td>
-        <td>Ikuti Bagian 3</td>
+        <td>JavaScript diblokir oleh pengaturan keamanan browser</td>
+        <td>Coba browser lain, atau pakai server lokal (Bagian 3)</td>
       </tr>
       <tr>
         <td>Pilihan bahasa tidak diingat</td>
@@ -747,8 +753,8 @@ tr:last-child td{border-bottom:none}
       </tr>
       <tr>
         <td>Tampilan berantakan tanpa warna</td>
-        <td>Folder <code>assets/css/</code> tidak ikut terunggah</td>
-        <td>Unggah ulang seluruh folder</td>
+        <td><code>index.html</code> terpisah dari folder <code>assets/</code></td>
+        <td>Pastikan keduanya selalu berada dalam satu folder</td>
       </tr>
       <tr>
         <td>Halaman kosong putih</td>

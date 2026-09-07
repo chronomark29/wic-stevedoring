@@ -96,39 +96,35 @@ menarik versi terbaru — tidak perlu mengunduh ulang semuanya.
 
 ## 3. Cara membuka di komputer sendiri
 
-Sebelum diunggah ke internet, sebaiknya website dicoba dulu di komputer.
-
-Mengklik dua kali `index.html` **memang bisa menampilkan halaman**, tetapi beberapa
-fitur (kalkulator estimasi, galeri, ganti bahasa) tidak akan berfungsi. Penyebabnya
-teknis: browser memblokir sebagian fungsi kalau berkas dibuka langsung dari hard disk.
-
-Cara yang benar adalah menjalankan "server kecil" di komputer Anda sendiri:
+Sebelum diunggah ke internet, website ini bisa langsung dicoba di komputer.
+Caranya sesederhana membuka foto:
 
 1. Buka folder website di **File Explorer**.
-2. Klik kolom alamat di bagian atas jendela, ketik `cmd`, lalu tekan **Enter**.
-   Akan muncul jendela hitam (Command Prompt) yang sudah berada di folder tersebut.
-3. Ketik perintah berikut lalu tekan **Enter**:
+2. Klik dua kali berkas `index.html`
+3. Website terbuka di browser. Selesai.
+
+> **Semua fitur berfungsi dengan cara ini.**
+> Kalkulator estimasi, pencari muatan, galeri beserta lightbox-nya, tombol ganti
+> bahasa, dan perpindahan antar halaman — semuanya sudah diuji dan berjalan normal
+> saat dibuka dengan klik dua kali. Anda **tidak perlu** memasang Python, Node,
+> atau aplikasi apa pun.
+
+Yang perlu diingat hanya satu: **jangan memindahkan `index.html` keluar dari
+foldernya.** Berkas itu mengambil tampilan dan foto dari folder `assets/` di
+sebelahnya. Kalau dipisahkan, halaman akan tampil polos tanpa warna dan tanpa foto.
+
+### Kalau ada fitur yang tetap tidak jalan
+
+Ini jarang terjadi, biasanya karena pengaturan keamanan browser di komputer kantor.
+Jalan keluarnya: buka folder website, klik kolom alamat File Explorer, ketik `cmd`
+lalu Enter, kemudian jalankan:
 
 ```bash
 python -m http.server 5211
 ```
 
-4. Buka browser, ketik alamat: **http://127.0.0.1:5211/**
-5. Website akan tampil lengkap dengan semua fiturnya.
-6. Kalau sudah selesai, kembali ke jendela hitam tadi dan tekan **Ctrl + C** untuk
-   menghentikannya.
-
-### Kalau muncul tulisan "python is not recognized"
-
-Artinya Python belum terpasang di komputer itu. Python gratis:
-
-1. Buka <https://www.python.org/downloads/>
-2. Klik tombol kuning **Download Python**.
-3. Jalankan berkas hasil unduhan.
-4. **Penting:** pada layar pertama pemasangan, centang kotak
-   **"Add Python to PATH"** sebelum menekan Install.
-5. Setelah selesai, **tutup dan buka ulang** Command Prompt, lalu ulangi langkah 3
-   di atas.
+Lalu buka **http://127.0.0.1:5211/** di browser. Tekan **Ctrl + C** untuk
+menghentikannya.
 
 ---
 
@@ -330,10 +326,10 @@ tanpa foto orang.
 | Gejala | Penyebab | Solusi |
 |---|---|---|
 | Foto tidak muncul | Folder `assets/` tidak ikut terunggah | Unggah ulang seluruh folder termasuk `assets/` |
-| Kalkulator atau galeri diam saja | Berkas dibuka lewat klik dua kali, bukan lewat server | Ikuti [bagian 3](#3-cara-membuka-di-komputer-sendiri) |
+| Kalkulator atau galeri diam saja | JavaScript diblokir pengaturan keamanan browser | Coba browser lain, atau pakai server lokal ([bagian 3](#3-cara-membuka-di-komputer-sendiri)) |
 | Pilihan bahasa tidak diingat | Browser dalam mode penyamaran (incognito) | Normal — bahasa tetap berganti, hanya tidak tersimpan |
 | Perubahan tidak kelihatan | Browser masih menampilkan versi lama dari ingatannya | Tekan **Ctrl + Shift + R** |
-| Website tampil berantakan tanpa warna | Folder `assets/css/` tidak ikut terunggah | Unggah ulang seluruh folder |
+| Website tampil berantakan tanpa warna | `index.html` terpisah dari folder `assets/` | Pastikan keduanya selalu dalam satu folder |
 | Halaman kosong putih | Ada kesalahan penulisan di `content.js` | Tekan **F12** di browser, lihat pesan merah di tab **Console** — di situ tertulis baris yang salah |
 
 > **Tips paling berguna:** sebelum mengubah `content.js`, **salin dulu berkasnya**
