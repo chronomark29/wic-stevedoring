@@ -215,6 +215,11 @@ Keterangan isian:
 | `cap.id` | Keterangan foto Bahasa Indonesia |
 | `cap.en` | Keterangan foto Bahasa Inggris |
 
+> **Soal tanda koma.** Setiap baris dalam daftar ini diakhiri tanda koma,
+> **termasuk baris paling bawah**. Itu sengaja, supaya menambah baris baru selalu
+> aman — Anda tinggal menyalin satu baris dan menempelkannya di bawah. Kalau koma
+> di ujung baris sebelumnya terhapus, halaman akan tampil kosong putih.
+
 > **Tips:** ukuran foto sebaiknya di bawah 500 KB supaya website tetap ringan
 > dibuka dari HP. Foto dari kamera HP biasanya 3–5 MB, jadi perlu diperkecil dulu.
 > Bisa memakai <https://squoosh.app> — gratis, langsung di browser.
@@ -293,7 +298,7 @@ daftar: `id:` untuk Bahasa Indonesia dan `en:` untuk Bahasa Inggris.
 Contoh:
 
 ```js
-'hero.title': 'Menggerakkan Muatan Anda,<br>Menguatkan Bisnis Anda<span class="dot">.</span>',
+'hero.title': 'Menggerakkan Muatan,<br>Menguatkan Bisnis Anda<span class="dot">.</span>',
 ```
 
 > **Hati-hati:** setiap tulisan harus diubah di **kedua** daftar — `id:` dan `en:`.

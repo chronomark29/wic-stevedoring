@@ -85,7 +85,7 @@ WIC.equipment = [
     name: { id: 'Bagging / Break Bulk (Sling)', en: 'Bagging / Break Bulk (Sling)' },
     note: { id: 'Muatan karung, big bag atau general cargo', en: 'Bagged, big-bag or general cargo' },
     rate: [1500, 2500]
-  }
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -197,7 +197,7 @@ WIC.cargo = [
     method: { id: 'Break bulk karung dan jumbo bag. Sling atau net, dilanjutkan bagging di palka bila diperlukan.', en: 'Bagged and jumbo-bag break bulk. Slings or nets, with in-hold bagging where required.' },
     equipment: ['bagged'],
     project: 'gypsum'
-  }
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -299,7 +299,7 @@ WIC.projects = [
       { k: { id: 'Pendukung', en: 'Support' }, v: 'Wheel Loader + Dump Truck' },
       { k: { id: 'Pelabuhan', en: 'Port' }, v: 'Cigading' }
     ]
-  }
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -337,7 +337,7 @@ WIC.awards = [
       id: 'Penghargaan kategori Logistics Service Provider atas kinerja layanan sepanjang tahun.',
       en: 'Awarded in the Logistics Service Provider category for year-round service performance.'
     }
-  }
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -372,7 +372,7 @@ WIC.testimonials = [
       id: 'PT. Wirama Indah Cigading (WIC) bekerja konsisten terhadap target yang kita minta dan komunikasi sangat baik.',
       en: 'PT. Wirama Indah Cigading (WIC) works consistently against the targets we set, and communication is excellent.'
     }
-  }
+  },
 ];
 
 /* --------------------------------------------------------------------------
@@ -409,7 +409,7 @@ WIC.partners = [
   { n: 'AJU', f: 'aju.png' },
   { n: 'GCU', f: 'gcu.png' },
   { n: 'GAMA', f: 'gama.png' },
-  { n: 'CMMI', f: 'cmmi.png' }
+  { n: 'CMMI', f: 'cmmi.png' },
 ];
 
 /* --------------------------------------------------------------------------
@@ -431,5 +431,5 @@ WIC.gallery = [
   { f: 'g12.jpg', cat: 'kapal',  cap: { id: 'Kapal dibantu tug boat menuju dermaga', en: 'Vessel assisted by tug to berth' } },
   { f: 'g13.jpg', cat: 'alat',   cap: { id: 'Crane beroperasi pada malam hari', en: 'Crane operating after dark' } },
   { f: 'g14.jpg', cat: 'operasi',cap: { id: 'Grab memuat ke hopper dan truk', en: 'Grab feeding hopper and trucks' } },
-  { f: 'g15.jpg', cat: 'operasi',cap: { id: 'Excavator menangani muatan curah', en: 'Excavator handling bulk cargo' } }
+  { f: 'g15.jpg', cat: 'operasi',cap: { id: 'Excavator menangani muatan curah', en: 'Excavator handling bulk cargo' } },
 ];

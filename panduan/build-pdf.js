@@ -62,6 +62,22 @@ fs.mkdirSync(SHOTS, { recursive: true });
       lebihLebar: p.scrollWidth - A4_W
     })).filter(p => p.lebihTinggi > 1 || p.lebihLebar > 1);
 
+    // Kaki halaman dipasang position:absolute, jadi ia TIDAK ikut menambah
+    // scrollHeight — isi yang tumbuh sampai menimpanya tidak terdeteksi oleh
+    // pemeriksaan "meluber" di atas. Karena itu jarak antara isi terakhir dan
+    // kaki halaman diukur tersendiri.
+    const nabrakKaki = pages.map((pg, i) => {
+      const kaki = pg.querySelector('.foot');
+      const isi = pg.querySelector('.body');
+      if (!kaki || !isi) return null;
+      const anak = [...isi.children].filter(e => e.getBoundingClientRect().height > 0);
+      if (!anak.length) return null;
+      const bawahIsi = Math.max(...anak.map(e => e.getBoundingClientRect().bottom));
+      const atasKaki = kaki.getBoundingClientRect().top;
+      const selisih = Math.round(bawahIsi - atasKaki);
+      return selisih > -8 ? { hal: i + 1, tabrakan: selisih } : null;
+    }).filter(Boolean);
+
     // Kotak kode memakai white-space:pre + overflow:hidden, jadi baris yang
     // kepanjangan terpotong diam-diam tanpa merusak tinggi halaman. Harus
     // diperiksa sendiri, tidak ikut terdeteksi oleh pemeriksaan halaman di atas.
@@ -121,6 +137,7 @@ fs.mkdirSync(SHOTS, { recursive: true });
       monoOk: document.fonts.check('400 15px "JetBrains Mono"'),
       tautan,
       alamatTanpaTautan,
+      nabrakKaki,
       preTerpotong,
       teksKecil: tiny,
       barisPanjang: longLines
@@ -133,6 +150,7 @@ fs.mkdirSync(SHOTS, { recursive: true });
   console.log('Gambar            :', check.totalGambar, '| rusak:', check.gambarRusak.length);
   if (check.gambarRusak.length) console.log('  rusak:', check.gambarRusak);
   console.log('Halaman meluber   :', check.meluber.length ? JSON.stringify(check.meluber) : 'tidak ada');
+  console.log('Nabrak kaki hal.  :', check.nabrakKaki.length ? JSON.stringify(check.nabrakKaki) : 'tidak ada');
   console.log('Tautan diklik     :', check.tautan);
   console.log('Alamat tak diklik :', check.alamatTanpaTautan.length);
   if (check.alamatTanpaTautan.length) check.alamatTanpaTautan.forEach(t => console.log('  •', t));
