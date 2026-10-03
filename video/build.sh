@@ -4,8 +4,9 @@
 #
 #   cd video
 #   npm install          # sekali saja (gsap + font Plus Jakarta Sans)
-#   bash build.sh        # ±15 menit; hasil di video/out/
+#   bash build.sh        # ±20 menit; hasil di video/out/
 #
+# Render ±20 menit (5 subframe motion blur per frame).
 # Butuh: Node 18+, ffmpeg, dan Playwright + Chromium
 # (npm i -g playwright && npx playwright install chromium).
 # ==========================================================================
@@ -16,7 +17,7 @@ echo "1/5  Memotret website…"
 node capture-site.js
 
 echo "2/5  Render frame 1080×1920 dengan motion blur…"
-node render.js --sub 3
+node render.js
 
 echo "3/5  Cover…"
 node render.js --still 1.8 > /dev/null

@@ -6,7 +6,7 @@
        node render.js --preview          540×960, cepat, tanpa motion blur
        node render.js --still 1.6,10.2   potret PNG di detik tertentu → build/stills/
        node render.js --from 5 --to 11   render sebagian (untuk cek satu scene)
-       node render.js --sub 3            jumlah subframe motion blur (default 2)
+       node render.js --sub 3            jumlah subframe motion blur (default 5)
 
    Setiap frame: window.__seek(t) → screenshot → dipipa ke ffmpeg.
    Motion blur: tiap frame dipotret beberapa kali dalam rentang "shutter"
@@ -32,7 +32,7 @@ function arg(name, def) {
 
 const PREVIEW = !!arg('preview', false);
 const STILL = arg('still', null);
-const SUB = PREVIEW ? 1 : Math.max(1, parseInt(arg('sub', '2'), 10));
+const SUB = PREVIEW ? 1 : Math.max(1, parseInt(arg('sub', '5'), 10));
 const SHUTTER = 0.5;                  // 180°
 const SCALE = PREVIEW ? 0.5 : 1;
 const OUT = path.resolve(arg('out', path.join(BUILD, PREVIEW ? 'visual-preview.mp4' : 'visual.mp4')));
@@ -50,6 +50,12 @@ const OUT = path.resolve(arg('out', path.join(BUILD, PREVIEW ? 'visual-preview.m
   const browser = await launch();
   const ctx = await browser.newContext({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: SCALE });
   const page = await ctx.newPage();
+  // Screenshot lewat CDP langsung: jauh lebih cepat daripada page.screenshot()
+  // yang menunggu font/animasi di setiap panggilan.
+  const cdp = await ctx.newCDPSession(page);
+  const grab = async () => Buffer.from((await cdp.send('Page.captureScreenshot', {
+    format: 'jpeg', quality: 94, optimizeForSpeed: true, captureBeyondViewport: false
+  })).data, 'base64');
   page.on('pageerror', (e) => console.error('[halaman]', e.message));
   await page.goto(srv.url + '/video/stage.html', { waitUntil: 'load' });
   await page.waitForFunction(() => window.__ready || window.__error, null, { timeout: 60000 });
@@ -97,7 +103,7 @@ const OUT = path.resolve(arg('out', path.join(BUILD, PREVIEW ? 'visual-preview.m
     '-vf', vf.join(','),
     '-r', String(fps),
     '-c:v', 'libx264', '-preset', PREVIEW ? 'veryfast' : 'slow',
-    '-crf', PREVIEW ? '23' : '18', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
+    '-crf', PREVIEW ? '23' : '20', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
     '-s', W + 'x' + H,
     '-movflags', '+faststart',
     OUT
@@ -113,7 +119,7 @@ const OUT = path.resolve(arg('out', path.join(BUILD, PREVIEW ? 'visual-preview.m
       const off = SUB > 1 ? (s / (SUB - 1) - 0.5) * SHUTTER : 0;
       const t = Math.max(0, (f + off) / fps);
       await page.evaluate((tt) => window.__seek(tt), t);
-      const buf = await page.screenshot({ type: 'jpeg', quality: 94 });
+      const buf = await grab();
       if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
     }
     const done = f - f0 + 1;

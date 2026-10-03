@@ -79,7 +79,7 @@ Hanya klaim yang terverifikasi yang dipakai (sama dengan website; lihat
 ```bash
 cd video
 npm install        # sekali saja
-bash build.sh      # ±15 menit → out/
+bash build.sh      # ±20 menit → out/
 ```
 
 Butuh Node 18+, ffmpeg, dan Playwright + Chromium

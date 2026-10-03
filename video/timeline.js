@@ -233,6 +233,10 @@
      TIMELINE
      ====================================================================== */
   function compose() {
+    // Lapisan FX harus mulai bersih. Tanpa set eksplisit di detik 0, nilai
+    // "from" flash pertama (opacity .35 di 1,5 s) ikut terpasang sejak frame 0.
+    tl.set('#flash, #leak', { opacity: 0 }, 0);
+
     /* ---------------- S1 · HOOK (0–3) ---------------- */
     scene('#s1', 0, 3.0);
     tl.set('#s1 .blk', { zIndex: 1 }, 0);
