@@ -27,6 +27,7 @@ diunggah ke hosting mana pun.
 | `Panduan-Website-WIC.pdf` | Panduan yang sama dalam bentuk PDF A4 siap cetak |
 | `panduan/` | Sumber PDF panduan (HTML + skrip render) — tidak memengaruhi website |
 | `_reference/` | Tangkapan layar website lama, arsip kondisi "sebelum" |
+| `video/` | Video Reels motion graphic 9:16 (sumber + hasil di `video/out/`) — tidak ikut ke website |
 
 ---
 

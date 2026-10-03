@@ -6,6 +6,11 @@ node_modules/
 #   cd panduan && node build-pdf.js
 panduan/halaman/
 
+# Hasil antara render video (frame, stem audio, preview) — bisa dibuat ulang
+# kapan saja dengan:
+#   cd video && bash build.sh
+video/build/
+
 # Berkas sementara sistem
 Thumbs.db
 ehthumbs.db

@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>WIC Reels — panggung animasi</title>
+<!--
+  Panggung video Reels 1080×1920. Halaman ini TIDAK diputar real-time:
+  render.js memanggil window.__seek(t) untuk setiap frame lalu memotretnya.
+  Semua gerak diatur timeline.js (GSAP, di-pause) — jangan tambahkan
+  transition/animation CSS di sini, karena tidak ikut di-seek.
+
+  Buka langsung di browser (lewat server, lihat README) untuk pratinjau:
+  tambahkan ?play=1 agar timeline berjalan sendiri.
+-->
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/800.css">
+<style>
+  /* Token warna — disalin dari assets/css/base.css supaya identik dengan website */
+  :root {
+    --navy-900: #04102C; --navy-800: #071F4D; --navy-700: #0B2B6B;
+    --navy-600: #113A8A; --navy-500: #1B4FB8; --navy-100: #E8EEFA;
+    --orange-600: #D96C0C; --orange-500: #F58220; --orange-400: #FF9F42; --orange-100: #FFF1E2;
+    --ink: #0C1526; --muted: #5B6478; --line: #E3E9F2; --surface: #F4F7FB;
+    --wa: #25D366; --logo-red: #E11D2E; --logo-blue: #1D3FB4;
+    --rgb: 0; --caa: 0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--navy-900); }
+  body {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    font-kerning: normal;
+  }
+  img { display: block; }
+
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--navy-900); }
+  #world { position: absolute; inset: 0; transform-origin: 50% 46%; }
+  .scene { position: absolute; inset: 0; overflow: hidden; visibility: hidden; }
+  .fill { position: absolute; inset: 0; }
+  .cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .abs { position: absolute; }
+  .nowrap { white-space: nowrap; }
+  .dot { color: var(--orange-500); font-style: normal; }
+  .o { color: var(--orange-500); }
+  .m { overflow: hidden; display: block; } /* padding bawah diatur timeline.js sesuai ukuran font */
+  .m > span, .m > div { display: inline-block; will-change: transform; }
+
+  /* Chromatic aberration: aktif hanya saat impact (render.js mengisi --rgb) */
+  .ca {
+    text-shadow:
+      calc(var(--rgb) * -1px) 0 rgba(255, 40, 90, calc(var(--caa) * .8)),
+      calc(var(--rgb) * 1px) 0 rgba(30, 220, 255, calc(var(--caa) * .8));
+  }
+
+  .display { font-weight: 800; letter-spacing: -.045em; line-height: .9; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 22px;
+    font-size: 30px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--orange-500);
+  }
+  .eyebrow::before { content: ""; width: 56px; height: 5px; border-radius: 3px; background: var(--orange-500); }
+
+  .dots {
+    background-image: radial-gradient(rgba(255, 255, 255, .16) 2.4px, transparent 2.6px);
+    background-size: 44px 44px;
+  }
+  .dots--navy { background-image: radial-gradient(rgba(11, 43, 107, .13) 2.4px, transparent 2.6px); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 14px;
+    height: 72px; padding: 0 30px; border-radius: 999px;
+    font-size: 28px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap;
+  }
+
+  /* ===================================================== S1 · HOOK */
+  #s1 .bg { position: absolute; inset: -40px; }
+  #s1 .bg img { object-position: 46% 50%; filter: contrast(1.12) saturate(1.2); }
+  #s1 .shade {
+    background:
+      linear-gradient(180deg, rgba(4,16,44,.70) 0%, rgba(4,16,44,.30) 30%, rgba(4,16,44,.42) 55%, rgba(4,16,44,.92) 100%),
+      rgba(4, 16, 44, .28);
+  }
+  #s1 .blk { background: #02081a; opacity: 0; }
+  .s1-a { position: absolute; left: 80px; top: 560px; width: 920px; }
+  .s1-kapal { font-size: 180px; color: #fff; text-shadow: 0 10px 50px rgba(0,0,0,.45); }
+  .s1-num {
+    display: flex; align-items: flex-start; margin-top: 22px;
+    font-size: 290px; color: var(--orange-500); height: 1em;
+    font-variant-numeric: tabular-nums;
+    filter: drop-shadow(0 12px 40px rgba(0,0,0,.45));
+  }
+  .s1-num .col { position: relative; height: 1em; overflow: hidden; width: .64em; text-align: center; }
+  .s1-num .col .strip { position: absolute; left: 0; right: 0; top: 0; }
+  .s1-num .col .strip div { height: 1em; line-height: 1; }
+  .s1-num .sep { width: .24em; line-height: 1; text-align: center; }
+  .s1-ton { position: relative; display: inline-block; margin-top: 46px; }
+  .s1-ton .bar { position: absolute; inset: -6px -26px; background: var(--orange-500); transform: skewX(-8deg); border-radius: 10px; transform-origin: 0 50%; }
+  .s1-ton span { position: relative; display: block; font-size: 96px; font-weight: 800; letter-spacing: .02em; color: #fff; line-height: 1.12; }
+  .s1-b { position: absolute; left: 80px; top: 720px; width: 920px; }
+  .s1-who1 { font-size: 132px; color: #fff; }
+  .s1-who2 { font-size: 236px; color: #fff; }
+  .s1-who2 .dot { display: inline-block; }
+
+  /* ===================================================== S2 · LOGO */
+  #s2 .bg { background: radial-gradient(120% 70% at 50% 40%, var(--navy-600) 0%, var(--navy-800) 45%, var(--navy-900) 100%); }
+  #s2 .ring { position: absolute; left: 50%; top: 700px; border-radius: 50%; border: 2px solid rgba(255,255,255,.10); transform: translate(-50%, -50%); }
+  #s2 .shock { position: absolute; left: 540px; top: 700px; width: 400px; height: 400px; margin: -200px 0 0 -200px; border-radius: 50%; border: 14px solid var(--orange-500); opacity: 0; }
+  #s2 .glow { position: absolute; left: 540px; top: 700px; width: 900px; height: 900px; margin: -450px 0 0 -450px; border-radius: 50%; background: radial-gradient(circle, rgba(245,130,32,.38) 0%, rgba(245,130,32,0) 62%); }
+  .s2-emblem { position: absolute; left: 340px; top: 500px; width: 400px; height: 400px; overflow: visible; }
+  .s2-text { position: absolute; left: 0; right: 0; top: 960px; text-align: center; }
+  .s2-text .eyebrow { justify-content: center; }
+  .s2-title { margin-top: 26px; font-size: 128px; }
+  .s2-chips { margin-top: 48px; display: flex; justify-content: center; gap: 18px; }
+  .chip--o { background: var(--orange-500); color: #fff; }
+  .chip--l { border: 3px solid rgba(255,255,255,.35); color: #fff; }
+
+  /* ===================================================== S3 · MUATAN */
+  #s3 .item { position: absolute; inset: 0; visibility: hidden; }
+  #s3 .bgblur { position: absolute; inset: -120px; }
+  #s3 .bgblur img { filter: blur(46px) saturate(1.25) brightness(.5); }
+  #s3 .card {
+    position: absolute; left: 80px; top: 470px; width: 920px; height: 575px;
+    border-radius: 36px; overflow: hidden;
+    box-shadow: 0 40px 90px rgba(0,0,0,.5), 0 0 0 3px rgba(255,255,255,.14);
+  }
+  #s3 .card img { width: 100%; height: 100%; object-fit: cover; }
+  #s3 .word { position: absolute; left: 80px; width: 920px; top: 1110px; color: #fff; }
+  #s3 .item.type .word { top: auto; }
+  #s3 .solid { position: absolute; inset: 0; }
+  .s3-count {
+    position: absolute; left: 80px; top: 300px; z-index: 5;
+    display: inline-flex; align-items: center; gap: 18px;
+    height: 84px; padding: 0 30px 0 26px; border-radius: 999px;
+    background: #fff; color: var(--navy-800);
+    font-size: 30px; font-weight: 800; letter-spacing: .14em;
+    box-shadow: 0 16px 40px rgba(4,16,44,.35);
+  }
+  .s3-count b { color: var(--orange-500); font-size: 40px; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+  .s3-count i { font-style: normal; color: var(--muted); font-size: 30px; letter-spacing: 0; }
+  #s3 .wallwrap { position: absolute; inset: 0; visibility: hidden; }
+  #s3 .wallbg { position: absolute; inset: -120px; }
+  #s3 .wallbg img { filter: blur(30px) saturate(1.1) brightness(.32); }
+  #s3 .wall { position: absolute; left: 80px; top: 0; width: 920px; transform-origin: 50% 0; }
+  #s3 .row { display: block; white-space: nowrap; font-weight: 800; letter-spacing: -.045em; line-height: .84; color: #fff; }
+  #s3 .row.out { color: transparent; -webkit-text-stroke: 3px rgba(255,255,255,.9); }
+  .s3-fifteen { position: absolute; left: 0; right: 0; top: 520px; text-align: center; visibility: hidden; }
+  .s3-fifteen .big { font-size: 620px; color: var(--orange-500); line-height: .8; letter-spacing: -.06em; filter: drop-shadow(0 30px 80px rgba(0,0,0,.5)); }
+  .s3-fifteen .lbl { margin-top: 30px; font-size: 104px; }
+  .s3-fifteen .sub { margin-top: 26px; font-size: 40px; font-weight: 600; color: rgba(255,255,255,.75); }
+
+  /* ===================================================== S4 · LAYANAN */
+  #s4 .bg {
+    background:
+      radial-gradient(60% 40% at 85% 12%, rgba(245,130,32,.16), transparent 70%),
+      linear-gradient(180deg, #ffffff 0%, #F4F7FB 55%, #E8EEFA 100%);
+  }
+  .s4-head { position: absolute; left: 80px; top: 290px; width: 920px; }
+  .s4-title { margin-top: 26px; font-size: 112px; color: var(--navy-800); }
+  .s4-cards { position: absolute; left: 80px; top: 690px; width: 920px; }
+  .s4-card {
+    position: relative; display: flex; align-items: center; gap: 36px;
+    height: 220px; padding: 0 40px 0 36px; margin-bottom: 36px;
+    background: #fff; border-radius: 34px;
+    box-shadow: 0 10px 24px rgba(7,31,77,.08), 0 28px 60px rgba(7,31,77,.10);
+  }
+  .s4-card .ic {
+    flex: none; width: 148px; height: 148px; border-radius: 30px;
+    background: var(--orange-100); display: grid; place-items: center;
+  }
+  .s4-card .ic svg { width: 86px; height: 86px; stroke: var(--orange-600); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .s4-card .num { font-size: 28px; font-weight: 800; letter-spacing: .2em; color: var(--orange-500); }
+  .s4-card h3 { font-size: 66px; font-weight: 800; letter-spacing: -.035em; color: var(--navy-800); line-height: 1.05; margin-top: 6px; }
+  .s4-card p { font-size: 34px; font-weight: 600; color: var(--muted); margin-top: 8px; }
+  .s4-card p b { color: var(--orange-500); }
+  .s4-line { position: absolute; left: 190px; top: 760px; width: 8px; height: 0; border-radius: 4px; background: var(--orange-500); }
+  .s4-puck { position: absolute; left: 194px; top: 760px; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; background: var(--orange-500); box-shadow: 0 0 0 12px rgba(245,130,32,.25), 0 0 40px 10px rgba(245,130,32,.55); }
+  .s4-tag { position: absolute; left: 80px; width: 920px; top: 1478px; font-size: 44px; font-weight: 800; color: var(--navy-800); letter-spacing: -.02em; }
+
+  /* ===================================================== S5 · BUKTI */
+  #s5 .bg { background: radial-gradient(110% 60% at 50% 30%, var(--navy-700) 0%, var(--navy-800) 50%, var(--navy-900) 100%); }
+  #s5 .photo { position: absolute; inset: -80px; opacity: .22; }
+  #s5 .photo img { filter: blur(6px) grayscale(.2); }
+  .s5-stat { position: absolute; left: 80px; top: 360px; width: 920px; visibility: hidden; }
+  .s5-stat .n { font-size: 360px; color: var(--orange-500); line-height: .82; font-variant-numeric: tabular-nums; }
+  .s5-stat .n sup { font-size: .5em; vertical-align: top; position: relative; top: .08em; margin-left: .02em; }
+  .s5-stat .l { margin-top: 34px; font-size: 76px; }
+  .s5-stat .s { margin-top: 18px; font-size: 38px; font-weight: 600; color: rgba(255,255,255,.72); }
+  .s5-years { position: absolute; left: 80px; top: 900px; width: 920px; height: 420px; visibility: hidden; }
+  .s5-years .track { position: absolute; left: 0; right: 0; top: 200px; height: 10px; border-radius: 5px; background: rgba(255,255,255,.16); }
+  .s5-years .fillbar { position: absolute; left: 0; top: 200px; height: 10px; border-radius: 5px; background: var(--orange-500); width: 0; box-shadow: 0 0 30px rgba(245,130,32,.6); }
+  .s5-years .y { position: absolute; top: 250px; font-size: 92px; font-weight: 800; letter-spacing: -.04em; }
+  .s5-years .cap { position: absolute; left: 0; right: 0; top: 60px; font-size: 38px; font-weight: 700; color: rgba(255,255,255,.72); }
+  .s5-years .pin { position: absolute; top: 185px; width: 40px; height: 40px; margin-left: -20px; border-radius: 50%; background: var(--orange-500); box-shadow: 0 0 0 12px rgba(245,130,32,.25); }
+  .s5-logos { position: absolute; left: 80px; top: 900px; width: 920px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; visibility: hidden; }
+  .s5-logos .lg { height: 112px; border-radius: 22px; background: #fff; display: grid; place-items: center; padding: 14px 18px; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+  .s5-logos .lg img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .s5-awards { position: absolute; left: 0; right: 0; top: 880px; height: 470px; visibility: hidden; }
+  .s5-awards .aw { position: absolute; top: 0; width: 320px; height: 450px; margin-left: -160px; border-radius: 26px; background: #fff; padding: 22px; box-shadow: 0 30px 70px rgba(0,0,0,.45); }
+  .s5-awards .aw img { width: 100%; height: 100%; object-fit: contain; }
+  .s5-za { position: absolute; left: 80px; width: 920px; top: 1410px; visibility: hidden; display: flex; align-items: center; gap: 18px; font-size: 36px; font-weight: 800; }
+  .s5-za svg { width: 56px; height: 56px; flex: none; }
+  .s5-za span { line-height: 1.25; }
+
+  /* ===================================================== S6 · WEBSITE */
+  #s6 .bg {
+    background:
+      radial-gradient(55% 35% at 90% 30%, rgba(245,130,32,.20), transparent 70%),
+      radial-gradient(70% 40% at 0% 90%, rgba(27,79,184,.12), transparent 70%),
+      linear-gradient(180deg, #ffffff 0%, #F4F7FB 60%, #E8EEFA 100%);
+  }
+  .s6-head { position: absolute; left: 80px; top: 286px; width: 920px; }
+  .s6-url { margin-top: 20px; font-size: 92px; font-weight: 800; letter-spacing: -.04em; color: var(--navy-800); white-space: nowrap; }
+  .s6-url .caret { display: inline-block; width: 8px; height: .9em; margin-left: 6px; vertical-align: -.1em; background: var(--orange-500); }
+  .laptop { position: absolute; left: 470px; top: 560px; width: 760px; transform-origin: 50% 100%; }
+  .laptop .lid { position: relative; width: 760px; height: 492px; border-radius: 26px 26px 6px 6px; background: #0b1220; padding: 22px 22px 26px; box-shadow: 0 40px 80px rgba(7,31,77,.25); }
+  .laptop .lid .scr { width: 100%; height: 100%; border-radius: 6px; overflow: hidden; background: #fff; }
+  .laptop .lid .scr img { width: 100%; }
+  .laptop .base { width: 860px; height: 30px; margin-left: -50px; border-radius: 4px 4px 22px 22px; background: linear-gradient(#cfd6e2, #9aa4b5); }
+  .phone {
+    position: absolute; left: 110px; top: 486px; width: 532px; height: 1090px;
+    border-radius: 80px; background: #0a0f1c; padding: 17px;
+    box-shadow: 0 50px 100px rgba(7,31,77,.35), 0 0 0 3px #2a3347 inset;
+    transform-origin: 50% 100%;
+  }
+  .phone .scr { position: relative; width: 498px; height: 1056px; border-radius: 64px; overflow: hidden; background: #fff; }
+  .phone .page { position: absolute; left: 0; top: 0; width: 498px; }
+  .phone .hdr, .phone .abar { position: absolute; left: 0; width: 498px; }
+  .phone .hdr { top: 0; visibility: hidden; }
+  .phone .abar { bottom: 0; }
+  .phone .island { position: absolute; left: 50%; top: 18px; width: 140px; height: 40px; margin-left: -70px; border-radius: 22px; background: #000; z-index: 3; }
+  .phone .tap { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; border: 6px solid rgba(255,255,255,.95); background: rgba(255,255,255,.25); opacity: 0; z-index: 4; }
+  .s6-feat { position: absolute; display: inline-flex; align-items: center; gap: 16px; height: 86px; padding: 0 30px 0 22px; border-radius: 999px; background: var(--navy-800); color: #fff; font-size: 32px; font-weight: 800; white-space: nowrap; box-shadow: 0 18px 40px rgba(7,31,77,.3); }
+  .s6-feat .ck { width: 46px; height: 46px; border-radius: 50%; background: var(--orange-500); display: grid; place-items: center; }
+  .s6-feat .ck svg { width: 26px; height: 26px; stroke: #fff; stroke-width: 3.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ===================================================== S7 · MOTTO */
+  #s7 .bg { background: #030a1e; }
+  #s7 .ph { position: absolute; inset: 0; visibility: hidden; }
+  #s7 .ph img { filter: grayscale(1) contrast(1.15) brightness(.85); }
+  #s7 .ph .tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,31,77,.82), rgba(4,16,44,.9)); mix-blend-mode: multiply; }
+  #s7 .ph .tint2 { position: absolute; inset: 0; background: rgba(245,130,32,.18); mix-blend-mode: screen; }
+  .s7-lines { position: absolute; left: 80px; width: 920px; top: 600px; }
+  .s7-line { display: block; font-size: 200px; white-space: nowrap; }
+  .s7-line.o { color: var(--orange-500); }
+
+  /* ===================================================== S8 · CTA */
+  #s8 .bg { background: radial-gradient(120% 70% at 50% 25%, var(--navy-700) 0%, var(--navy-800) 45%, var(--navy-900) 100%); }
+  #s8 .glow { position: absolute; left: 540px; top: 1300px; width: 1300px; height: 900px; margin: -450px 0 0 -650px; background: radial-gradient(closest-side, rgba(245,130,32,.32), rgba(245,130,32,0)); }
+  .s8-brand { position: absolute; left: 80px; top: 300px; display: flex; align-items: center; gap: 22px; }
+  .s8-brand svg { width: 92px; height: 92px; }
+  .s8-brand .t1 { font-size: 34px; font-weight: 800; letter-spacing: -.01em; }
+  .s8-brand .t2 { font-size: 22px; font-weight: 700; letter-spacing: .18em; color: rgba(255,255,255,.65); text-transform: uppercase; margin-top: 4px; }
+  .s8-q { position: absolute; left: 80px; top: 470px; width: 920px; }
+  .s8-q span { white-space: nowrap; }
+  .s8-q .a { font-size: 108px; }
+  .s8-q .b { font-size: 148px; color: var(--orange-500); }
+  .s8-card { position: absolute; left: 80px; top: 860px; width: 920px; border-radius: 40px; background: #fff; color: var(--navy-800); padding: 18px 40px; box-shadow: 0 40px 90px rgba(0,0,0,.45); }
+  .s8-row { display: flex; align-items: center; gap: 28px; height: 128px; border-bottom: 2px solid var(--line); }
+  .s8-row:last-child { border-bottom: 0; }
+  .s8-row .ic { flex: none; width: 80px; height: 80px; border-radius: 22px; display: grid; place-items: center; background: var(--orange-100); }
+  .s8-row .ic svg { width: 44px; height: 44px; stroke: var(--orange-600); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .s8-row.wa .ic { background: var(--wa); }
+  .s8-row.wa .ic svg { stroke: none; fill: #fff; }
+  .s8-row .k { font-size: 24px; font-weight: 800; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+  .s8-row .v { font-size: 46px; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; white-space: nowrap; }
+  .s8-btn { position: absolute; left: 80px; top: 1316px; width: 920px; height: 132px; border-radius: 999px; background: var(--orange-500); display: flex; align-items: center; justify-content: center; gap: 22px; font-size: 48px; font-weight: 800; color: #fff; overflow: hidden; box-shadow: 0 20px 50px rgba(245,130,32,.45); }
+  .s8-btn svg { width: 48px; height: 48px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .s8-btn .shine { position: absolute; top: -20px; bottom: -20px; left: 0; width: 160px; background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); transform: skewX(-20deg); }
+  .s8-credit { position: absolute; left: 0; right: 0; top: 1478px; text-align: center; font-size: 26px; font-weight: 600; letter-spacing: .08em; color: rgba(255,255,255,.62); }
+  .s8-credit b { font-weight: 800; color: #fff; }
+  #s8 .loopbg { position: absolute; inset: -40px; opacity: 0; }
+  #s8 .loopbg img { object-position: 46% 50%; }
+  #s8 .loopbg .shade { position: absolute; inset: 0; background: rgba(4,16,44,.55); }
+
+  /* ===================================================== FX */
+  #fx { position: absolute; inset: 0; pointer-events: none; }
+  #grain { position: absolute; inset: 0; width: 1080px; height: 1920px; mix-blend-mode: overlay; opacity: .11; }
+  #vignette { position: absolute; inset: 0; background: radial-gradient(120% 85% at 50% 45%, transparent 55%, rgba(0,0,0,.42) 100%); }
+  #leak { position: absolute; inset: 0; mix-blend-mode: screen; opacity: 0;
+    background:
+      radial-gradient(40% 28% at 92% 8%, rgba(255,140,40,.55), transparent 70%),
+      radial-gradient(30% 22% at 4% 70%, rgba(255,90,30,.35), transparent 70%); }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="mbx" x="-15%" y="0" width="130%" height="100%" color-interpolation-filters="sRGB">
+    <feGaussianBlur id="mbxb" stdDeviation="0 0" edgeMode="duplicate"/>
+  </filter>
+</svg>
+<div id="stage">
+  <div id="world">
+
+    <!-- ============ S1 · HOOK (0–3 s) ============ -->
+    <section class="scene" id="s1">
+      <div class="bg"><img class="cover" src="../assets/img/gallery/g05.jpg" alt=""></div>
+      <div class="fill shade"></div>
+      <div class="s1-a">
+        <div class="m s1-kapal-m"><div class="s1-kapal display ca nowrap">1 KAPAL<i class="dot">.</i></div></div>
+        <div class="s1-num display ca" id="s1num"></div>
+        <div class="s1-ton"><div class="bar"></div><span>TON GYPSUM</span></div>
+      </div>
+      <div class="s1-b">
+        <div class="m"><div class="s1-who1 display nowrap">Siapa yang</div></div>
+        <div class="m"><div class="s1-who2 display ca nowrap">bongkar<i class="dot">?</i></div></div>
+      </div>
+      <div class="fill blk"></div>
+    </section>
+
+    <!-- ============ S2 · LOGO (3–5 s) ============ -->
+    <section class="scene" id="s2">
+      <div class="fill bg"></div>
+      <div class="fill dots"></div>
+      <div class="glow"></div>
+      <div class="ring" style="width:620px;height:620px"></div>
+      <div class="ring" style="width:900px;height:900px"></div>
+      <div class="ring" style="width:1220px;height:1220px"></div>
+      <div class="shock"></div>
+      <svg class="s2-emblem" viewBox="0 0 64 64" aria-hidden="true">
+        <circle class="e-plate" cx="32" cy="32" r="30.5" fill="#fff"/>
+        <circle class="e-ring" cx="32" cy="32" r="27.6" fill="none" stroke="#E11D2E" stroke-width="3.6"/>
+        <circle class="e-disc" cx="32" cy="32" r="23" fill="#1D3FB4"/>
+        <path class="e-bar" d="M17 26h30" stroke="#fff" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+        <path class="e-w" d="M20.5 28.5l6.5 15.5 5-11.5 5 11.5 6.5-15.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><clipPath id="eclip"><circle cx="32" cy="32" r="30.5"/></clipPath></defs>
+        <g clip-path="url(#eclip)"><g transform="rotate(20 32 32)"><rect class="e-glint" x="-20" y="-20" width="9" height="104" fill="rgba(255,255,255,.7)"/></g></g>
+      </svg>
+      <div class="s2-text">
+        <div class="eyebrow s2-eyebrow">Stevedoring Company</div>
+        <div class="s2-title display">
+          <div class="m"><span>Wirama Indah</span></div>
+          <div class="m"><span>Cigading<i class="dot">.</i></span></div>
+        </div>
+        <div class="s2-chips">
+          <span class="chip chip--o">Sejak 1999</span>
+          <span class="chip chip--l">Pelabuhan Cigading</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ S3 · 15 JENIS MUATAN (5–11 s) ============ -->
+    <section class="scene" id="s3">
+      <div id="s3items"></div>
+      <div class="wallwrap">
+        <div class="wallbg"><img class="cover" src="../assets/img/projects/coal.png" alt=""></div>
+        <div class="wall" id="s3wall"></div>
+      </div>
+      <div class="s3-fifteen">
+        <div class="big display ca">15</div>
+        <div class="lbl display">jenis muatan<i class="dot">.</i></div>
+        <div class="sub">Curah kering &amp; break bulk</div>
+      </div>
+      <div class="s3-count"><span>MUATAN</span><b id="s3n">01</b><i>/ 15</i></div>
+    </section>
+
+    <!-- ============ S4 · 3 LAYANAN (11–15 s) ============ -->
+    <section class="scene" id="s4">
+      <div class="fill bg"></div>
+      <div class="fill dots dots--navy"></div>
+      <div class="s4-head">
+        <div class="eyebrow s4-eyebrow">Layanan kami</div>
+        <div class="s4-title display">
+          <div class="m"><span>3 layanan inti,</span></div>
+          <div class="m"><span>satu rantai<i class="dot">.</i></span></div>
+        </div>
+      </div>
+      <div class="s4-line"></div>
+      <div class="s4-cards">
+        <div class="s4-card">
+          <div class="ic"><svg viewBox="0 0 48 48"><path d="M6 30h36l-5 9H11z"/><path d="M12 30V19h16v11"/><path d="M18 19v-7h6v7"/><path d="M33 30l4-14"/><path d="M37 16l-6-2"/><path d="M4 43c3 0 3-2 6-2s3 2 6 2 3-2 6-2 3 2 6 2 3-2 6-2 3 2 6 2"/></svg></div>
+          <div><div class="num">01</div><h3>Stevedoring</h3><p>Kapal <b>→</b> Dermaga</p></div>
+        </div>
+        <div class="s4-card">
+          <div class="ic"><svg viewBox="0 0 48 48"><path d="M10 42V8h22"/><path d="M10 8l30 0"/><path d="M36 8v9"/><path d="M32 17h8l-1 6h-6z"/><path d="M4 42h40"/><path d="M10 16l8-8"/><path d="M22 42v-9h14v9"/></svg></div>
+          <div><div class="num">02</div><h3>Cargodoring</h3><p>Dermaga <b>→</b> Gudang</p></div>
+        </div>
+        <div class="s4-card">
+          <div class="ic"><svg viewBox="0 0 48 48"><path d="M3 12h26v22H3z"/><path d="M29 19h9l6 7v8h-15"/><circle cx="12" cy="36" r="4"/><circle cx="36" cy="36" r="4"/><path d="M8 20h12"/><path d="M8 26h8"/></svg></div>
+          <div><div class="num">03</div><h3>Receiving / Delivery</h3><p>Gudang <b>→</b> Tujuan</p></div>
+        </div>
+      </div>
+      <div class="s4-puck"></div>
+      <div class="s4-tag"><div class="m"><span>Dari palka kapal sampai gudang Anda<i class="dot">.</i></span></div></div>
+    </section>
+
+    <!-- ============ S5 · BUKTI (15–19 s) ============ -->
+    <section class="scene" id="s5">
+      <div class="fill bg"></div>
+      <div class="photo"><img class="cover" src="../assets/img/gallery/g09.jpg" alt=""></div>
+      <div class="fill dots" style="opacity:.6"></div>
+
+      <div class="s5-stat" id="st1">
+        <div class="n display ca"><span class="cnt" data-to="26">0</span><sup>+</sup></div>
+        <div class="l display"><div class="m"><span>tahun pengalaman<i class="dot">.</i></span></div></div>
+      </div>
+      <div class="s5-years">
+        <div class="track"></div><div class="fillbar"></div>
+        <div class="pin" style="left:0"></div><div class="pin p2" style="left:100%"></div>
+        <div class="cap">Berdiri 10 Desember 1999 · terus beroperasi</div>
+        <div class="y" style="left:0">1999</div>
+        <div class="y o" style="right:0">2026</div>
+      </div>
+
+      <div class="s5-stat" id="st2">
+        <div class="n display ca"><span class="cnt" data-to="31">0</span><sup>+</sup></div>
+        <div class="l display"><div class="m"><span>klien &amp; mitra<i class="dot">.</i></span></div></div>
+      </div>
+      <div class="s5-logos" id="s5logos"></div>
+
+      <div class="s5-stat" id="st3">
+        <div class="n display ca"><span class="cnt" data-to="3">0</span></div>
+        <div class="l display"><div class="m"><span>penghargaan<i class="dot">.</i></span></div></div>
+      </div>
+      <div class="s5-awards">
+        <div class="aw a1" style="left:250px"><img src="../assets/img/awards/supplier-of-the-year.png" alt=""></div>
+        <div class="aw a3" style="left:830px"><img src="../assets/img/awards/customer-of-the-year.png" alt=""></div>
+        <div class="aw a2" style="left:540px"><img src="../assets/img/awards/zero-accident.png" alt=""></div>
+      </div>
+      <div class="s5-za">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+        <span>Zero Accident 2016 · Krakatau Bandar Samudera</span>
+      </div>
+    </section>
+
+    <!-- ============ S6 · WEBSITE (19–23 s) ============ -->
+    <section class="scene" id="s6">
+      <div class="fill bg"></div>
+      <div class="fill dots dots--navy"></div>
+      <div class="s6-head">
+        <div class="eyebrow">Website baru</div>
+        <div class="s6-url"><span id="s6url"></span><span class="caret"></span></div>
+      </div>
+      <div class="laptop">
+        <div class="lid"><div class="scr"><img src="build/site-desktop.png" alt=""></div></div>
+        <div class="base"></div>
+      </div>
+      <div class="phone">
+        <div class="scr">
+          <img class="page" src="build/site-mobile.png" alt="">
+          <img class="hdr" src="build/site-mobile-header.png" alt="">
+          <img class="abar" src="build/site-mobile-actionbar.png" alt="">
+          <div class="island"></div>
+          <div class="tap"></div>
+        </div>
+      </div>
+      <div id="s6feats"></div>
+    </section>
+
+    <!-- ============ S7 · MOTTO (23–25 s) ============ -->
+    <section class="scene" id="s7">
+      <div class="fill bg"></div>
+      <div class="ph p1"><img class="cover" src="../assets/img/gallery/g11.jpg" alt=""><div class="tint"></div><div class="tint2"></div></div>
+      <div class="ph p2"><img class="cover" src="../assets/img/gallery/g10.jpg" alt=""><div class="tint"></div><div class="tint2"></div></div>
+      <div class="ph p3"><img class="cover" src="../assets/img/gallery/g03.jpg" alt=""><div class="tint"></div><div class="tint2"></div></div>
+      <div class="s7-lines">
+        <div class="s7-line display ca l1">ONE GREAT<i class="dot">.</i></div>
+        <div class="s7-line display ca l2 o">ONE TEAM<i class="dot" style="color:#fff">.</i></div>
+        <div class="s7-line display ca l3">ONE WINNER<i class="dot">.</i></div>
+      </div>
+    </section>
+
+    <!-- ============ S8 · CTA (25–29 s) ============ -->
+    <section class="scene" id="s8">
+      <div class="fill bg"></div>
+      <div class="fill dots" style="opacity:.55"></div>
+      <div class="glow"></div>
+      <div class="s8-brand">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30.5" fill="#fff"/>
+          <circle cx="32" cy="32" r="27.6" fill="none" stroke="#E11D2E" stroke-width="3.6"/>
+          <circle cx="32" cy="32" r="23" fill="#1D3FB4"/>
+          <path d="M17 26h30" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M20.5 28.5l6.5 15.5 5-11.5 5 11.5 6.5-15.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div><div class="t1">PT. Wirama Indah Cigading</div><div class="t2">Stevedoring Company</div></div>
+      </div>
+      <div class="s8-q display">
+        <div class="m"><span class="a">Ada kapal yang</span></div>
+        <div class="m"><span class="b ca">akan sandar?</span></div>
+      </div>
+      <div class="s8-card">
+        <div class="s8-row wa">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.7-.3-1.5-.7-2.3-1.5-.6-.5-1-1.2-1.2-1.4-.1-.2 0-.4.1-.5l.4-.4.2-.4c.1-.1 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.6 1.1 2.7c.1.2 1.9 2.9 4.6 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.2z"/></svg></div>
+          <div><div class="k">WhatsApp</div><div class="v">0813-1012-1513</div></div>
+        </div>
+        <div class="s8-row">
+          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3z"/></svg></div>
+          <div><div class="k">Website</div><div class="v">wicstevedoring.com</div></div>
+        </div>
+        <div class="s8-row">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></div>
+          <div><div class="k">Lokasi</div><div class="v">Pelabuhan Cigading, Cilegon</div></div>
+        </div>
+      </div>
+      <div class="s8-btn"><span>Minta Penawaran</span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><div class="shine"></div></div>
+      <div class="s8-credit">Motion graphic by <b>Kaelyth Studio</b></div>
+      <div class="loopbg"><img class="cover" src="../assets/img/gallery/g05.jpg" alt=""><div class="shade"></div></div>
+    </section>
+
+  </div>
+
+  <div id="fx">
+    <div id="leak"></div>
+    <div id="vignette"></div>
+    <canvas id="grain" width="540" height="960"></canvas>
+    <div id="flash"></div>
+  </div>
+</div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script src="timeline.js"></script>
+</body>
+</html>

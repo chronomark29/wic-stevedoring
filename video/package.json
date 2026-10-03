@@ -1,0 +1,15 @@
+{
+  "name": "wic-reels-video",
+  "private": true,
+  "description": "Video Reels motion graphic PT. Wirama Indah Cigading — dirender dari HTML + GSAP dengan Playwright dan ffmpeg.",
+  "scripts": {
+    "capture": "node capture-site.js",
+    "render": "node render.js",
+    "audio": "node audio.js",
+    "build": "bash build.sh"
+  },
+  "dependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.1.0",
+    "gsap": "^3.12.5"
+  }
+}
