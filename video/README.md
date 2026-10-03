@@ -2,7 +2,12 @@
 
 Video motion graphic vertikal 9:16 (1080×1920, 29 detik) untuk Instagram Reels.
 Dibuat oleh **Kaelyth Studio** dari aset website ini: foto operasional, logo, palet
-navy–oranye, font Plus Jakarta Sans, dan rekaman website barunya.
+navy–oranye, font Plus Jakarta Sans, dan rekaman desain website barunya.
+
+> **Status website:** website resmi WIC saat ini masih **wicstevedoring.com** (versi
+> lama). Desain baru di repo ini adalah karya Kaelyth Studio dan bisa diakses sebagai
+> **demo di wic-stevedoring.vercel.app**. Video menyebutnya "Demo website baru", dan
+> kartu kontak di akhir video tetap menampilkan wicstevedoring.com sebagai website resmi.
 
 Folder ini **tidak ikut ke website** (diabaikan Vercel lewat `.vercelignore`).
 
@@ -32,7 +37,7 @@ Semua cut jatuh di ketukan musik (120 BPM, 1 ketukan = 0,5 detik).
 | 5–11 | 15 jenis muatan: montase foto lalu dinding kata, ditutup "15" | Ritme cepat yang makin rapat; penghitung 01/15 membuat orang menonton sampai habis |
 | 11–15 | 3 layanan inti: Stevedoring, Cargodoring, Receiving/Delivery | Penjelasan layanan dalam satu rantai |
 | 15–19 | 26+ tahun, 31+ klien & mitra, 3 penghargaan, Zero Accident 2016 | Bukti / kredibilitas |
-| 19–23 | Website baru di mockup HP + laptop | Menunjukkan wicstevedoring.com dan fiturnya |
+| 19–23 | Demo website baru di mockup HP + laptop: wic-stevedoring.vercel.app, "Desain baru oleh Kaelyth Studio · DEMO" | Memamerkan hasil desain website Kaelyth beserta fiturnya |
 | 23–25 | "ONE GREAT. ONE TEAM. ONE WINNER." | Puncak emosi, motto perusahaan |
 | 25–29 | "Ada kapal yang akan sandar?" + WhatsApp, website, lokasi | Ajakan bertindak; frame terakhir menyambung ke frame pertama (loop) |
 
@@ -50,7 +55,9 @@ Hanya klaim yang terverifikasi yang dipakai (sama dengan website; lihat
 3. **Beri nama audio orisinalnya** (Instagram mengizinkan mengganti nama "Original
    audio"), misalnya *"WIC — Satu Rantai · Kaelyth Studio"*. Kalau orang lain memakai
    audionya, nama itu ikut tersebar.
-4. **Caption** — buka dengan hook, tutup dengan ajakan:
+4. **Caption + disclaimer.** Baris pertama adalah hook (yang terlihat sebelum
+   "selengkapnya"). Link di caption Instagram tidak bisa diklik, jadi pasang juga
+   wic-stevedoring.vercel.app di bio atau stiker link Story.
 
    ```
    1 kapal. 55.254 ton gypsum. Siapa yang bongkar? ⚓
@@ -58,16 +65,27 @@ Hanya klaim yang terverifikasi yang dipakai (sama dengan website; lihat
    PT. Wirama Indah Cigading, mitra bongkar muat di Pelabuhan Cigading sejak 1999.
    Stevedoring, cargodoring, sampai receiving/delivery — satu rantai, satu tim.
 
-   Ada kapal yang akan sandar? WhatsApp 0813-1012-1513 · wicstevedoring.com
+   🎬 Motion graphic & 🖥️ desain website baru oleh Kaelyth Studio.
+   Coba demo website barunya: wic-stevedoring.vercel.app
 
-   #bongkarmuat #stevedoring #pelabuhan #cilegon #banten #logistik #pelayaran #curahkering #shipping #motiongraphic
+   Ada kapal yang akan sandar? WhatsApp 0813-1012-1513
+
+   —
+   ℹ️ Disclaimer: Website resmi PT. Wirama Indah Cigading saat ini tetap di
+   wicstevedoring.com (versi lama). wic-stevedoring.vercel.app adalah desain website
+   baru hasil karya Kaelyth Studio dan sudah bisa diakses sebagai versi demo.
+   Logo, nama, dan foto adalah milik PT. Wirama Indah Cigading.
+
+   #bongkarmuat #stevedoring #pelabuhan #cilegon #banten #logistik #pelayaran #curahkering #motiongraphic #webdesign #kaelythstudio
    ```
 
-5. **Sematkan komentar pertama** berisi ajakan, misalnya: *"Mau jadwalkan bongkar
-   muat di Cigading? Chat WA 0813-1012-1513 atau klik link di bio."*
+5. **Sematkan komentar pertama** berisi ajakan dan disclaimer singkat, misalnya:
+   *"Mau jadwalkan bongkar muat di Cigading? Chat WA 0813-1012-1513. Demo website
+   baru buatan Kaelyth Studio: wic-stevedoring.vercel.app (website resmi saat ini
+   masih wicstevedoring.com)."*
 6. **Balas semua komentar di jam pertama.** Interaksi awal ikut menentukan seberapa
    luas Reels didorong.
-7. **Bagikan ke Story** dengan stiker link ke wicstevedoring.com.
+7. **Bagikan ke Story** dengan stiker link ke demo wic-stevedoring.vercel.app.
 8. **Uji dulu dengan "Trial Reels"** (fitur Instagram untuk menayangkan Reels ke
    non-pengikut lebih dulu) kalau ingin membandingkan versi musik orisinal dengan
    versi `wic-reels-sfx-saja.mp4` + audio tren.

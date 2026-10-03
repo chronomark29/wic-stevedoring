@@ -93,7 +93,9 @@
     { t: 21.0,  x: 60,  y: 1150, txt: 'Kalkulator estimasi' },
     { t: 21.65, x: 480, y: 1380, txt: 'WhatsApp 1 klik' }
   ];
-  var URL_TXT = 'wicstevedoring.com';
+  // Desain baru ini masih demo di Vercel; wicstevedoring.com masih website lama.
+  var URL_TXT = 'wic-stevedoring.vercel.app';
+  var TYPE_T0 = 19.25, TYPE_DUR = 0.85;
 
   function build() {
     /* --- S1: kolom angka bergulir --- */
@@ -128,6 +130,12 @@
     s1Cols.forEach(function (c, i) { S1_STOP.push(1.0 + i * 0.1); });
 
     fit($('.s1-who1'), 920, 140);
+    var u = $('.s6-url');
+    $('#s6url').textContent = URL_TXT;
+    u.style.display = 'inline-block';
+    fit(u, 900, 92);
+    u.style.display = '';
+    $('#s6url').textContent = '';
     fit($('.s8-q .a'), 920, 112);
     fit($('.s8-q .b'), 920, 170);
     fit($('.s1-who2'), 920, 250);
@@ -444,7 +452,8 @@
     tl.fromTo('.phone .tap', { scale: 0.3, opacity: 1 }, { scale: 1.7, opacity: 0, duration: 0.45, ease: 'power2.out' }, 22.2);
     tl.to(FEATS[3].el, { scale: 1.1, duration: 0.15, ease: 'power2.out', yoyo: true, repeat: 1 }, 22.2);
     cue(22.2, 'click');
-    for (var c = 0; c < URL_TXT.length; c++) cue(19.25 + c * (0.7 / URL_TXT.length), 'type', { amp: 0.5 + ((c * 7) % 5) * 0.08 });
+    for (var c = 0; c < URL_TXT.length; c++) cue(TYPE_T0 + c * (TYPE_DUR / URL_TXT.length), 'type', { amp: 0.5 + ((c * 7) % 5) * 0.08 });
+    tl.fromTo('.s6-note', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, TYPE_T0 + TYPE_DUR + 0.05);
     // Keluar: dorong maju
     tl.to('#s6 .phone, #s6 .laptop, #s6 .s6-head, #s6feats', { scale: 1.18, opacity: 0, filter: 'blur(16px)', duration: 0.24, ease: 'power3.in' }, 22.78);
     cue(22.76, 'whoosh', { dur: 0.3 });
@@ -591,10 +600,10 @@
   var urlEl, caretEl, phoneScr;
   DERIVED.push(function (t) {
     if (t < 18.8 || t > 23.2) return;
-    var n = clamp(Math.floor((t - 19.25) / 0.7 * URL_TXT.length) + 1, 0, URL_TXT.length);
-    if (t < 19.25) n = 0;
+    var n = clamp(Math.floor((t - TYPE_T0) / TYPE_DUR * URL_TXT.length) + 1, 0, URL_TXT.length);
+    if (t < TYPE_T0) n = 0;
     urlEl.textContent = URL_TXT.slice(0, n);
-    var typing = t >= 19.25 && t < 19.95;
+    var typing = t >= TYPE_T0 && t < TYPE_T0 + TYPE_DUR;
     caretEl.style.opacity = typing || Math.floor(t * 3) % 2 === 0 ? 1 : 0;
     phoneScr.style.transform = 'translateY(' + (Math.sin((t - 19) * 2.4) * 7).toFixed(2) + 'px)';
   });
